@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 30" width="100%" height="100%">
+  <!-- Google Agent Development Kit (ADK) Official 4-Color Vector Icon -->
+  <g transform="translate(1, 0.5)">
+    <!-- Top-Right Blue Agent Arc -->
+    <path fill="#4285F4" d="M17 2.5 C23.5 2.5, 29 8, 29 14.5 C29 17.2, 28.1 19.7, 26.6 21.7 L23.2 18.3 C24 17.2, 24.5 15.9, 24.5 14.5 C24.5 10.4, 21.1 7, 17 7 C15.6 7, 14.3 7.5, 13.2 8.3 L9.8 4.9 C11.8 3.4, 14.3 2.5, 17 2.5 Z" />
+
+    <!-- Left Red Synaptic Loop -->
+    <path fill="#EA4335" d="M17 2.5 C14.3 2.5, 11.8 3.4, 9.8 4.9 L13.2 8.3 C14.3 7.5, 15.6 7, 17 7 L17 2.5 Z M5 14.5 C5 10.8, 6.7 7.5, 9.4 5.3 L6 1.9 C2.3 4.9, 0 9.4, 0 14.5 C0 19.6, 2.3 24.1, 6 27.1 L9.4 23.7 C6.7 21.5, 5 18.2, 5 14.5 Z" />
+
+    <!-- Top-Center Yellow Spark Core Arc -->
+    <path fill="#FBBC05" d="M17 7 C21.1 7, 24.5 10.4, 24.5 14.5 C24.5 15.9, 24 17.2, 23.2 18.3 L26.6 21.7 C28.1 19.7, 29 17.2, 29 14.5 C29 7.9, 23.6 2.5, 17 2.5 L17 7 Z" opacity="0.95" />
+
+    <!-- Bottom Green Agent Foundation Ring -->
+    <path fill="#34A853" d="M17 22 C12.9 22, 9.5 18.6, 9.5 14.5 C9.5 13.1, 10 11.8, 10.8 10.7 L7.4 7.3 C5.9 9.3, 5 11.8, 5 14.5 C5 21.1, 10.4 26.5, 17 26.5 C21.1 26.5, 24.7 24.4, 26.8 21.2 L23 17.4 C21.8 20.2, 19.6 22, 17 22 Z" />
+
+    <!-- Central Agent Core Diamond Spark -->
+    <polygon points="17,10 20.5,14.5 17,19 13.5,14.5" fill="#4285F4" />
+    <circle cx="17" cy="14.5" r="2.2" fill="#ffffff" />
+  </g>
+</svg>

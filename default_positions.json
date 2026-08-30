@@ -1,0 +1,79 @@
+{
+  "workspace-left": {
+    "anchor": "left",
+    "vAnchor": "bottom",
+    "offsetX": 378.87,
+    "offsetY": 306.3,
+    "storageKey": "workspace_left_pos"
+  },
+  "marina-left": {
+    "anchor": "left",
+    "vAnchor": "top",
+    "offsetX": 438.75,
+    "offsetY": 309.19,
+    "storageKey": "marina_left_pos"
+  },
+  "workspace-right": {
+    "anchor": "right",
+    "vAnchor": "bottom",
+    "offsetX": 381.05,
+    "offsetY": 305.21,
+    "storageKey": "workspace_right_pos"
+  },
+  "marina-right": {
+    "anchor": "right",
+    "vAnchor": "top",
+    "offsetX": 439.84,
+    "offsetY": 313.55,
+    "storageKey": "marina_right_pos"
+  },
+  "jetski-object": {
+    "anchor": "left",
+    "vAnchor": "top",
+    "offsetX": 79.48,
+    "offsetY": 30.48,
+    "storageKey": "jetski_pos"
+  },
+  "jetski-object-right": {
+    "anchor": "right",
+    "vAnchor": "top",
+    "offsetX": 79.48,
+    "offsetY": 30.48,
+    "storageKey": "jetski_right_pos"
+  },
+  "gcp-object": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": -206.85,
+    "offsetY": 172.39,
+    "storageKey": "gcp_pos"
+  },
+  "adk-object": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": -72.94,
+    "offsetY": 172.25,
+    "storageKey": "adk_pos"
+  },
+  "spanner-object": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": 69.68,
+    "offsetY": 170.93,
+    "storageKey": "spanner_pos"
+  },
+  "gdrive-object": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": 200.32,
+    "offsetY": 170.18,
+    "storageKey": "gdrive_pos"
+  },
+  "ace-object": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": 0,
+    "offsetY": 913.43,
+    "storageKey": "ace_pos"
+  }
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Dynamic Pulley &amp; Belt WebApp</title>
+  <meta name="description" content="A dynamic and animated single page webapp with 1 large central wheel and 2 top wheels connected with belts.">
+  
+  <!-- Site Icon / Favicon -->
+  <link rel="icon" type="image/png" href="large-wheel.png">
+  <link rel="apple-touch-icon" href="large-wheel.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=retina_marina_fix_v6">
+</head>
+<body>
+  <div class="app-container" id="app">
+    <canvas id="sim-canvas"></canvas>
+
+    <!-- Draggable Positionable Jetski Object (Left) -->
+    <div id="jetski-object" class="draggable-item draggable-jetski" title="Jetski (Left) - Click &amp; drag to position anywhere on the page">
+      <div class="item-glow jetski-glow"></div>
+      <div class="item-label jetski-top-label">Jetski</div>
+      <div class="jetski-img-wrapper">
+        <img src="Jetski.svg" alt="Jetski" class="jetski-img" draggable="false">
+      </div>
+      <div class="jetski-skills-badge" id="jetski-skills-badge">
+        <svg class="skills-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L13.9 7.8L19.7 9.7L13.9 11.6L12 17.4L10.1 11.6L4.3 9.7L10.1 7.8L12 2Z" fill="url(#sparkle-grad)" stroke="#00f0ff" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M18.5 15.5L19.3 17.2L21 18L19.3 18.8L18.5 20.5L17.7 18.8L16 18L17.7 17.2L18.5 15.5Z" fill="#cba9fd" stroke="#cba9fd" stroke-width="0.8" stroke-linejoin="round"/>
+          <path d="M5.5 2.5L6.1 3.9L7.5 4.5L6.1 5.1L5.5 6.5L4.9 5.1L3.5 4.5L4.9 3.9L5.5 2.5Z" fill="#00f0ff" stroke="#00f0ff" stroke-width="0.6"/>
+          <defs>
+            <linearGradient id="sparkle-grad" x1="4.3" y1="2" x2="19.7" y2="17.4" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#00f0ff"/>
+              <stop offset="0.55" stop-color="#7ef7ea"/>
+              <stop offset="1" stop-color="#866bf6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="skills-text">Skills</span>
+      </div>
+    </div>
+
+    <!-- Draggable Positionable Jetski Object (Right Mirrored) -->
+    <div id="jetski-object-right" class="draggable-item draggable-jetski draggable-jetski-right" title="Jetski (Right) - Click &amp; drag to position anywhere on the page">
+      <div class="item-glow jetski-glow"></div>
+      <div class="item-label jetski-top-label">Jetski</div>
+      <div class="jetski-img-wrapper">
+        <img src="Jetski.svg" alt="Jetski" class="jetski-img" draggable="false">
+      </div>
+      <div class="jetski-skills-badge" id="jetski-skills-badge-right">
+        <svg class="skills-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L13.9 7.8L19.7 9.7L13.9 11.6L12 17.4L10.1 11.6L4.3 9.7L10.1 7.8L12 2Z" fill="url(#sparkle-grad-right)" stroke="#00f0ff" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M18.5 15.5L19.3 17.2L21 18L19.3 18.8L18.5 20.5L17.7 18.8L16 18L17.7 17.2L18.5 15.5Z" fill="#cba9fd" stroke="#cba9fd" stroke-width="0.8" stroke-linejoin="round"/>
+          <path d="M5.5 2.5L6.1 3.9L7.5 4.5L6.1 5.1L5.5 6.5L4.9 5.1L3.5 4.5L4.9 3.9L5.5 2.5Z" fill="#00f0ff" stroke="#00f0ff" stroke-width="0.6"/>
+          <defs>
+            <linearGradient id="sparkle-grad-right" x1="4.3" y1="2" x2="19.7" y2="17.4" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#00f0ff"/>
+              <stop offset="0.55" stop-color="#7ef7ea"/>
+              <stop offset="1" stop-color="#866bf6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="skills-text">Skills</span>
+      </div>
+    </div>
+
+    <!-- Draggable Positionable Google Cloud Object -->
+    <div id="gcp-object" class="draggable-item draggable-gcp" title="Google Cloud - Click &amp; drag to position anywhere on the page">
+      <div class="item-glow gcp-glow"></div>
+      <img src="GoogleCloud.svg?v=official_v2" alt="Google Cloud" class="gcp-img" draggable="false">
+      <div class="item-label gcp-label">Google Cloud</div>
+    </div>
+
+    <!-- Draggable Positionable ADK (Central Curator) Object -->
+    <div id="adk-object" class="draggable-item draggable-adk" title="Central Curator (Google ADK) - Click &amp; drag to position anywhere on the page">
+      <div class="item-glow adk-glow"></div>
+      <img src="ADK.png?v=official_adk_v1" alt="Central Curator" class="adk-img" draggable="false">
+      <div class="item-label adk-label">Central Curator</div>
+    </div>
+
+    <!-- Draggable Positionable Spanner (Semantic Links) Object -->
+    <div id="spanner-object" class="draggable-item draggable-spanner" title="Semantic Links (Spanner) - Click &amp; drag to position anywhere on the page">
+      <div class="item-glow spanner-glow"></div>
+      <img src="Spanner.png?v=1" alt="Semantic Links" class="spanner-img" draggable="false">
+      <div class="item-label spanner-label">Semantic Links</div>
+    </div>
+
+    <!-- Draggable Positionable Google Drive Object -->
+    <div id="gdrive-object" class="draggable-item draggable-gdrive" title="Google Drive - Click &amp; drag to position anywhere on the page">
+      <div class="item-glow gdrive-glow"></div>
+      <img src="gdrive.png?v=1" alt="Google Drive" class="gdrive-img" draggable="false">
+      <div class="item-label gdrive-label">Google Drive</div>
+    </div>
+
+    <!-- Draggable Positionable ACE Object -->
+    <div id="ace-object" class="draggable-item draggable-ace" title="ACE - Click &amp; drag to position anywhere on the page">
+      <div class="item-glow ace-glow"></div>
+      <img src="ACE.png?v=1" alt="ACE" class="ace-img" draggable="false">
+      <div class="item-label ace-label">ACE</div>
+    </div>
+
+    <!-- LEFT CIRCUIT: Personal Workspace (Left) -->
+    <div id="workspace-left" class="draggable-item draggable-workspace" title="Personal Workspace (Left) - Drag to position">
+      <div class="item-glow workspace-glow"></div>
+      <div class="workspace-card">
+        <div class="workspace-header">Personal Workspace</div>
+        <img src="Workspace.png?v=trans_v2" alt="Personal Workspace" class="workspace-img" draggable="false">
+      </div>
+    </div>
+
+    <!-- LEFT CIRCUIT: Marina Capsule Sidecar (Left) -->
+    <div id="marina-left" class="draggable-item draggable-marina" title="Marina Capsule Sidecar (Left) - Steps 90° every 4s">
+      <div class="item-glow marina-glow"></div>
+      <div class="marina-wheel-wrapper">
+        <canvas id="marina-canvas-left" width="120" height="120"></canvas>
+      </div>
+      <div class="item-label marina-label">
+        <div class="marina-line1">Marina Capsule</div>
+        <div class="marina-line2">Sidecar Curator</div>
+      </div>
+    </div>
+
+    <!-- RIGHT CIRCUIT: Specular Personal Workspace (Right) -->
+    <div id="workspace-right" class="draggable-item draggable-workspace" title="Personal Workspace (Right) - Drag to position">
+      <div class="item-glow workspace-glow"></div>
+      <div class="workspace-card">
+        <div class="workspace-header">Personal Workspace</div>
+        <img src="Workspace.png?v=trans_v2" alt="Personal Workspace" class="workspace-img" draggable="false">
+      </div>
+    </div>
+
+    <!-- RIGHT CIRCUIT: Specular Marina Capsule Sidecar (Right) -->
+    <div id="marina-right" class="draggable-item draggable-marina" title="Marina Capsule Sidecar (Right) - Steps 90° every 4s">
+      <div class="item-glow marina-glow"></div>
+      <div class="marina-wheel-wrapper">
+        <canvas id="marina-canvas-right" width="120" height="120"></canvas>
+      </div>
+      <div class="item-label marina-label">
+        <div class="marina-line1">Marina Capsule</div>
+        <div class="marina-line2">Sidecar Curator</div>
+      </div>
+    </div>
+
+    <!-- Master Layout Sync Controls -->
+    <button id="btn-sync-layout" class="btn-sync-layout" onclick="LayoutManager.syncCurrentToMaster()" title="Lock your current layout so Incognito and all other browsers open with this exact layout">
+      💾 Lock Layout for All Browsers
+    </button>
+    <div id="sync-toast" class="sync-toast"></div>
+  </div>
+
+  <script src="app.js?v=anchor_aware_sync_v9"></script>
+</body>
+</html>
