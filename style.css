@@ -720,7 +720,7 @@ body.mirrored-view .btn-sync-layout {
 /* Page Header Title */
 .page-title {
   position: absolute;
-  top: 20px;
+  top: 70px;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
