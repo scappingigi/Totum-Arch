@@ -30,15 +30,15 @@
   "jetski-object": {
     "anchor": "left",
     "vAnchor": "top",
-    "offsetX": 86.67,
-    "offsetY": 25.56,
+    "offsetX": 44.04,
+    "offsetY": 33.09,
     "storageKey": "jetski_pos"
   },
   "jetski-object-right": {
     "anchor": "right",
     "vAnchor": "top",
-    "offsetX": 94.44,
-    "offsetY": 24.44,
+    "offsetX": 59.38,
+    "offsetY": 22.66,
     "storageKey": "jetski_right_pos"
   },
   "gcp-object": {

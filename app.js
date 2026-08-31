@@ -1233,19 +1233,21 @@
             curveRatio: 0.16,
             fontSize: 10.5,
             badgeH: 22,
-            pipeW: 30
+            pipeW: 30,
+            pipeLen: 220
           });
         }
 
-        // 2b. Jetski Skills (Bottom) -> Marina Wheel: "Totum Curator Skills"
+        // 2b. Jetski Skills (Bottom) -> Marina Wheel: "Totum Local Curator Skills"
         if (pMarinaLeft) {
-          this.drawCurvedSkillConduit(ctx, pSkillsBottom, pMarinaLeft, 'Totum Curator Skills', timestamp, {
+          this.drawCurvedSkillConduit(ctx, pSkillsBottom, pMarinaLeft, 'Totum Local Curator Skills', timestamp, {
             reverseBulge: true,
             tPipe: 0.48,
             curveRatio: 0.18,
             fontSize: 10.5,
             badgeH: 22,
-            pipeW: 30
+            pipeW: 30,
+            pipeLen: 240
           });
         }
 
@@ -1374,19 +1376,21 @@
             curveRatio: 0.16,
             fontSize: 10.5,
             badgeH: 22,
-            pipeW: 30
+            pipeW: 30,
+            pipeLen: 220
           });
         }
 
-        // 4b. Right Jetski Skills (Bottom) -> Right Marina Wheel: "Totum Curator Skills"
+        // 4b. Right Jetski Skills (Bottom) -> Right Marina Wheel: "Totum Local Curator Skills"
         if (pMarinaRight) {
-          this.drawCurvedSkillConduit(ctx, pSkillsRightBottom, pMarinaRight, 'Totum Curator Skills', timestamp, {
+          this.drawCurvedSkillConduit(ctx, pSkillsRightBottom, pMarinaRight, 'Totum Local Curator Skills', timestamp, {
             reverseBulge: false, // Mirrored downward arch towards right marina wheel
             tPipe: 0.48,
             curveRatio: 0.18,
             fontSize: 10.5,
             badgeH: 22,
-            pipeW: 30
+            pipeW: 30,
+            pipeLen: 240
           });
         }
 
