@@ -1221,16 +1221,19 @@
           y: skillsRect.bottom
         };
 
-        // 2a. Jetski Skills (Right) -> Left Wheel (Top Apex): "Totum Retriever"
+        // 2a. Jetski Skills (Right) -> Left Wheel (Top Apex): "Totum Retriever Skills"
         if (leftWheel) {
           const pLeftWheelTop = {
             x: leftWheel.x,
             y: leftWheel.y - leftWheel.radius
           };
-          this.drawCurvedSkillConduit(ctx, pSkillsRight, pLeftWheelTop, 'Totum Retriever', timestamp, {
+          this.drawCurvedSkillConduit(ctx, pSkillsRight, pLeftWheelTop, 'Totum Retriever Skills', timestamp, {
             reverseBulge: true,
             tPipe: 0.30,
-            curveRatio: 0.16
+            curveRatio: 0.16,
+            fontSize: 10.5,
+            badgeH: 22,
+            pipeW: 30
           });
         }
 
@@ -1355,16 +1358,19 @@
           y: skillsRightRect.bottom
         };
 
-        // 4a. Right Jetski Skills (Left) -> Right Wheel (Top Apex): "Totum Retriever"
+        // 4a. Right Jetski Skills (Left) -> Right Wheel (Top Apex): "Totum Retriever Skills"
         if (rightWheel) {
           const pRightWheelTop = {
             x: rightWheel.x,
             y: rightWheel.y - rightWheel.radius
           };
-          this.drawCurvedSkillConduit(ctx, pSkillsRightLeft, pRightWheelTop, 'Totum Retriever', timestamp, {
+          this.drawCurvedSkillConduit(ctx, pSkillsRightLeft, pRightWheelTop, 'Totum Retriever Skills', timestamp, {
             reverseBulge: false, // Mirrored upward/inward arch towards right wheel top
             tPipe: 0.30,
-            curveRatio: 0.16
+            curveRatio: 0.16,
+            fontSize: 10.5,
+            badgeH: 22,
+            pipeW: 30
           });
         }
 
