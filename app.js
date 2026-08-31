@@ -626,9 +626,7 @@
       this.lastTime = performance.now();
       this.vibrationPhase = 0;
 
-      // Load Rest.png assets
-      this.restImg = new Image();
-      this.restImg.src = 'Rest.png?v=1';
+
 
       this.initPulleys();
       this.setupEventListeners();
@@ -1928,16 +1926,7 @@
       ctx.lineTo(rightX, footY);
       ctx.stroke();
 
-      // 5. Draw the Icons and Texts from Rest.png on the Rectangular Basement
-      if (this.restImg && this.restImg.complete && this.restImg.naturalWidth > 0) {
-        const imgAspect = this.restImg.naturalWidth / this.restImg.naturalHeight;
-        const targetH = Math.min(82, rectH - 22);
-        const targetW = targetH * imgAspect;
-        const imgX = x - targetW / 2;
-        const imgY = rectY + (rectH - targetH) / 2;
 
-        ctx.drawImage(this.restImg, imgX, imgY, targetW, targetH);
-      }
 
       ctx.restore();
     }
