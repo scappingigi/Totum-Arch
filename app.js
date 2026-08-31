@@ -264,7 +264,7 @@
         let offsetY = 0;
 
         // Center-aligned items (e.g. tools below the wheel or near center column)
-        const isCenterTool = ['gcp-object', 'spanner-object', 'gdrive-object', 'ace-object', 'adk-object'].includes(item.elementId);
+        const isCenterTool = ['gcp-object', 'gcp-copy', 'gcp-copy-2', 'spanner-object', 'gdrive-object', 'gdrive-copy', 'gdrive-copy-2', 'ace-object', 'adk-object'].includes(item.elementId);
         
         if (isCenterTool || (itemCenterX >= cx - 220 && itemCenterX <= cx + 220)) {
           anchor = 'center';
@@ -428,6 +428,24 @@
     }
 
     bindEvents() {
+      const onWindowResizeOrLoad = () => {
+        if (this.posData) {
+          this.recalculateFromAnchor();
+        } else if (!LayoutManager.masterDefaults || !LayoutManager.masterDefaults[this.elementId]) {
+          this.resetToDefault();
+        } else {
+          this.applyPositionData(LayoutManager.masterDefaults[this.elementId]);
+        }
+      };
+
+      window.addEventListener('resize', onWindowResizeOrLoad);
+      window.addEventListener('load', onWindowResizeOrLoad);
+
+      // Disable dragging if running on port 8020
+      if (window.location.port === '8020' || window.location.href.includes(':8020') || document.body.classList.contains('mirrored-view')) {
+        return;
+      }
+
       const onPointerDown = (e) => {
         this.isDragging = true;
         this.el.classList.add('dragging');
@@ -465,19 +483,6 @@
       this.el.addEventListener('pointermove', onPointerMove);
       this.el.addEventListener('pointerup', onPointerUp);
       this.el.addEventListener('pointercancel', onPointerUp);
-
-      const onWindowResizeOrLoad = () => {
-        if (this.posData) {
-          this.recalculateFromAnchor();
-        } else if (!LayoutManager.masterDefaults || !LayoutManager.masterDefaults[this.elementId]) {
-          this.resetToDefault();
-        } else {
-          this.applyPositionData(LayoutManager.masterDefaults[this.elementId]);
-        }
-      };
-
-      window.addEventListener('resize', onWindowResizeOrLoad);
-      window.addEventListener('load', onWindowResizeOrLoad);
     }
   }
 
@@ -607,6 +612,10 @@
   // --- Main Simulation App ---
   class DynamicBeltApp {
     constructor() {
+      console.log("[DynamicBeltApp] Initializing. Port:", window.location.port);
+      if (window.location.port === '8020' || window.location.href.includes(':8020')) {
+        document.body.classList.add('mirrored-view');
+      }
       this.canvas = document.getElementById('sim-canvas');
       this.ctx = this.canvas.getContext('2d');
       this.width = 0;
@@ -636,22 +645,38 @@
       // Floating items
       new DraggableItem('jetski-object', 'jetski_pos', 40, 240);                // Mid Left
       new DraggableItem('jetski-object-right', 'jetski_right_pos', -40, 240);   // Mid Right (Mirrored)
-      new DraggableItem('gcp-object', 'gcp_pos', 40, -180);                     // Bottom Mid Left
+      new DraggableItem('gcp-object', 'gcp_pos', 40, -180);                     // Bottom Mid Left (Totum Project)
+      new DraggableItem('gcp-copy', 'gcp_copy_pos', 140, -180);                 // Google Cloud Copy
+      new DraggableItem('gcp-copy-2', 'gcp_copy2_pos', 200, -180);              // Google Cloud Copy 2
       new DraggableItem('adk-object', 'adk_pos', -40, -180);                    // Bottom Mid Right
       new DraggableItem('spanner-object', 'spanner_pos', 150, -180);            // Bottom Mid Center
-      new DraggableItem('gdrive-object', 'gdrive_pos', 260, -180);              // Bottom Mid Right-Center
-      new DraggableItem('ace-object', 'ace_pos', 370, -180);                     // Bottom Mid Center-Right Floating Object
+      new DraggableItem('gdrive-object', 'gdrive_pos', 260, -180);              // Bottom Mid Right-Center (Central Docs)
+      new DraggableItem('gdrive-copy', 'gdrive_copy_pos', 370, -180);           // Google Drive Copy
+      new DraggableItem('gdrive-copy-2', 'gdrive_copy2_pos', 430, -180);        // Google Drive Copy 2
+      new DraggableItem('ace-object', 'ace_pos', 480, -180);                    // Bottom Mid Center-Right Floating Object
 
       // Load Master Shared Layout Defaults (for Incognito & other browsers)
       LayoutManager.loadMasterDefaults();
 
       // Hook up Lock Master Layout Button
       const syncBtn = document.getElementById('btn-sync-layout');
+      const isMirrored = window.location.port === '8020' || window.location.href.includes(':8020') || document.body.classList.contains('mirrored-view');
       if (syncBtn) {
-        syncBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          LayoutManager.syncCurrentToMaster();
-        });
+        if (isMirrored) {
+          syncBtn.style.display = 'none';
+        } else {
+          syncBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            LayoutManager.syncCurrentToMaster();
+          });
+        }
+      }
+
+      // If running on port 8020, poll for layout updates to mirror 8022
+      if (isMirrored) {
+        setInterval(() => {
+          LayoutManager.loadMasterDefaults();
+        }, 2000);
       }
 
       // Initialize Dual Marina Stepping Wheel Renderers
@@ -1969,16 +1994,29 @@
     setupEventListeners() {
       window.addEventListener('resize', () => this.resize());
 
-      this.canvas.addEventListener('pointerdown', (e) => this.onPointerDown(e));
-      window.addEventListener('pointermove', (e) => this.onPointerMove(e));
-      window.addEventListener('pointerup', (e) => this.onPointerUp(e));
-      window.addEventListener('pointercancel', (e) => this.onPointerUp(e));
+      const isMirrored = window.location.port === '8020' || window.location.href.includes(':8020') || document.body.classList.contains('mirrored-view');
+
+      if (!isMirrored) {
+        this.canvas.addEventListener('pointerdown', (e) => this.onPointerDown(e));
+        window.addEventListener('pointermove', (e) => this.onPointerMove(e));
+        window.addEventListener('pointerup', (e) => this.onPointerUp(e));
+        window.addEventListener('pointercancel', (e) => this.onPointerUp(e));
+      }
 
       window.addEventListener('keydown', (e) => {
+        if (isMirrored) {
+          return;
+        }
         if (e.code === 'Space') {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+            return;
+          }
           e.preventDefault();
           state.motorOn = !state.motorOn;
         } else if (e.code === 'KeyR') {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+            return;
+          }
           e.preventDefault();
           state.motorDir *= -1;
         }

@@ -4,7 +4,7 @@ import json
 import os
 import sys
 
-PORT = 8080
+PORT = 8022
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
 class LayoutSyncHandler(http.server.SimpleHTTPRequestHandler):
@@ -50,9 +50,16 @@ class LayoutSyncHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 if __name__ == '__main__':
+    port = PORT
+    if len(sys.argv) > 1:
+        try:
+            port = int(sys.argv[1])
+        except ValueError:
+            print(f"Invalid port: {sys.argv[1]}. Using default {PORT}")
+
     socketserver.TCPServer.allow_reuse_address = True
-    with socketserver.TCPServer(("", PORT), LayoutSyncHandler) as httpd:
-        print(f"Serving HTTP on port {PORT} with Layout Sync API enabled...")
+    with socketserver.TCPServer(("", port), LayoutSyncHandler) as httpd:
+        print(f"Serving HTTP on port {port} with Layout Sync API enabled...")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:

@@ -552,3 +552,7 @@ html, body {
   opacity: 1;
   transform: translateY(0);
 }
+
+body.mirrored-view .btn-sync-layout {
+  display: none !important;
+}
