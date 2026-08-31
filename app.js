@@ -264,7 +264,7 @@
         let offsetY = 0;
 
         // Center-aligned items (e.g. tools below the wheel or near center column)
-        const isCenterTool = ['gcp-object', 'gcp-copy', 'gcp-copy-2', 'spanner-object', 'gdrive-object', 'gdrive-copy', 'gdrive-copy-2', 'ace-object', 'adk-object'].includes(item.elementId);
+        const isCenterTool = ['gcp-object', 'gcp-copy', 'gcp-copy-2', 'spanner-object', 'gdrive-object', 'gdrive-copy-2', 'ace-object', 'adk-object'].includes(item.elementId);
         
         if (isCenterTool || (itemCenterX >= cx - 220 && itemCenterX <= cx + 220)) {
           anchor = 'center';
@@ -650,7 +650,7 @@
       new DraggableItem('adk-object', 'adk_pos', -40, -180);                    // Bottom Mid Right
       new DraggableItem('spanner-object', 'spanner_pos', 150, -180);            // Bottom Mid Center
       new DraggableItem('gdrive-object', 'gdrive_pos', 260, -180);              // Bottom Mid Right-Center (Central Docs)
-      new DraggableItem('gdrive-copy', 'gdrive_copy_pos', 370, -180);           // Google Drive Copy
+
       new DraggableItem('gdrive-copy-2', 'gdrive_copy2_pos', 430, -180);        // Google Drive Copy 2
       new DraggableItem('ace-object', 'ace_pos', 480, -180);                    // Bottom Mid Center-Right Floating Object
 

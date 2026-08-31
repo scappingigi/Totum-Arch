@@ -83,13 +83,7 @@
     "offsetY": 170.9,
     "storageKey": "gdrive_pos"
   },
-  "gdrive-copy": {
-    "anchor": "center",
-    "vAnchor": "bottom",
-    "offsetX": 382.22,
-    "offsetY": 46.46,
-    "storageKey": "gdrive_copy_pos"
-  },
+
   "gdrive-copy-2": {
     "anchor": "center",
     "vAnchor": "bottom",
