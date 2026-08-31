@@ -69,6 +69,13 @@
     "offsetY": 170.8,
     "storageKey": "adk_pos"
   },
+  "adk-copy": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": 0.0,
+    "offsetY": 46.0,
+    "storageKey": "adk_copy_pos"
+  },
   "spanner-object": {
     "anchor": "center",
     "vAnchor": "bottom",
