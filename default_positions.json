@@ -79,8 +79,8 @@
   "adk-copy": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 280.83,
-    "offsetY": 43.93,
+    "offsetX": 281.11,
+    "offsetY": 44.13,
     "storageKey": "adk_copy_pos"
   },
   "spanner-object": {
@@ -114,22 +114,29 @@
   "salesforce-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": -262.99,
-    "offsetY": 49.62,
+    "offsetX": -263.33,
+    "offsetY": 49.25,
     "storageKey": "salesforce_pos"
   },
   "moma-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 120.0,
-    "offsetY": 890.0,
+    "offsetX": -176.04,
+    "offsetY": 45.84,
     "storageKey": "moma_pos"
   },
   "buganizer-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 240.0,
-    "offsetY": 890.0,
+    "offsetX": 197.34,
+    "offsetY": 41.18,
     "storageKey": "buganizer_pos"
+  },
+  "horizon-object": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": 360.0,
+    "offsetY": 890.0,
+    "storageKey": "horizon_pos"
   }
 }
