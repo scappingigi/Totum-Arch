@@ -264,7 +264,7 @@
         let offsetY = 0;
 
         // Center-aligned items (e.g. tools below the wheel or near center column)
-        const isCenterTool = ['gcp-object', 'gcp-copy', 'gcp-copy-2', 'gcp-copy-3', 'spanner-object', 'gdrive-object', 'gdrive-copy-2', 'ace-object', 'adk-object', 'adk-copy', 'salesforce-object', 'moma-object', 'buganizer-object', 'horizon-object'].includes(item.elementId);
+        const isCenterTool = ['gcp-object', 'gcp-copy', 'gcp-copy-2', 'gcp-copy-3', 'spanner-object', 'gdrive-object', 'gdrive-copy-2', 'ace-object', 'adk-object', 'adk-copy', 'salesforce-object', 'moma-object', 'buganizer-object', 'horizon-object', 'github-object'].includes(item.elementId);
         
         if (isCenterTool || (itemCenterX >= cx - 220 && itemCenterX <= cx + 220)) {
           anchor = 'center';
@@ -659,6 +659,7 @@
       new DraggableItem('moma-object', 'moma_pos', -140, 240);                  // Moma Object
       new DraggableItem('buganizer-object', 'buganizer_pos', -240, 240);        // Buganizer Object
       new DraggableItem('horizon-object', 'horizon_pos', -340, 240);            // Horizon Object
+      new DraggableItem('github-object', 'github_pos', -440, 240);              // GitHub Object
 
       // Load Master Shared Layout Defaults (for Incognito & other browsers)
       LayoutManager.loadMasterDefaults();

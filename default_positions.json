@@ -51,22 +51,22 @@
   "gcp-copy": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 513.33,
-    "offsetY": 46.48,
+    "offsetX": 525.09,
+    "offsetY": 46.74,
     "storageKey": "gcp_copy_pos"
   },
   "gcp-copy-2": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": -506.67,
-    "offsetY": 46.48,
+    "offsetX": -531.41,
+    "offsetY": 46.42,
     "storageKey": "gcp_copy2_pos"
   },
   "gcp-copy-3": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 380,
-    "offsetY": 46.48,
+    "offsetX": 416.58,
+    "offsetY": 46.01,
     "storageKey": "gcp_copy3_pos"
   },
   "adk-object": {
@@ -79,8 +79,8 @@
   "adk-copy": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 281.11,
-    "offsetY": 44.13,
+    "offsetX": 318.17,
+    "offsetY": 41.22,
     "storageKey": "adk_copy_pos"
   },
   "spanner-object": {
@@ -100,8 +100,8 @@
   "gdrive-copy-2": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": -380,
-    "offsetY": 46.46,
+    "offsetX": -425.14,
+    "offsetY": 46.5,
     "storageKey": "gdrive_copy2_pos"
   },
   "ace-object": {
@@ -114,29 +114,36 @@
   "salesforce-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": -263.33,
-    "offsetY": 49.25,
+    "offsetX": -317.68,
+    "offsetY": 49.31,
     "storageKey": "salesforce_pos"
   },
   "moma-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": -176.04,
-    "offsetY": 45.84,
+    "offsetX": -224.74,
+    "offsetY": 46.74,
     "storageKey": "moma_pos"
   },
   "buganizer-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 197.34,
-    "offsetY": 41.18,
+    "offsetX": 218.8,
+    "offsetY": 44.15,
     "storageKey": "buganizer_pos"
   },
   "horizon-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 360.0,
-    "offsetY": 890.0,
+    "offsetX": -138.98,
+    "offsetY": 48.35,
     "storageKey": "horizon_pos"
+  },
+  "github-object": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": 480.0,
+    "offsetY": 890.0,
+    "storageKey": "github_pos"
   }
 }

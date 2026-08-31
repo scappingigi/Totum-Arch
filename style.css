@@ -684,3 +684,35 @@ body.mirrored-view .btn-sync-layout {
   padding: 2px 8px;
   white-space: nowrap;
 }
+
+/* --- GitHub Item Specifics --- */
+.draggable-github {
+  bottom: 180px;
+  width: 96px;
+  gap: 4px;
+}
+
+.github-glow {
+  border-radius: 14px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(110, 84, 148, 0.15) 50%, transparent 80%);
+}
+
+.github-img {
+  width: 66px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  filter: invert(1) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.25));
+  pointer-events: none;
+}
+
+.github-label {
+  background: rgba(10, 16, 26, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
