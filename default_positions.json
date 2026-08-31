@@ -62,6 +62,13 @@
     "offsetY": 46.48,
     "storageKey": "gcp_copy2_pos"
   },
+  "gcp-copy-3": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": 380,
+    "offsetY": 46.48,
+    "storageKey": "gcp_copy3_pos"
+  },
   "adk-object": {
     "anchor": "center",
     "vAnchor": "bottom",
@@ -72,8 +79,8 @@
   "adk-copy": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 0.0,
-    "offsetY": 46.0,
+    "offsetX": 280.83,
+    "offsetY": 43.93,
     "storageKey": "adk_copy_pos"
   },
   "spanner-object": {
@@ -90,20 +97,12 @@
     "offsetY": 170.9,
     "storageKey": "gdrive_pos"
   },
-
   "gdrive-copy-2": {
     "anchor": "center",
     "vAnchor": "bottom",
     "offsetX": -380,
     "offsetY": 46.46,
     "storageKey": "gdrive_copy2_pos"
-  },
-  "gcp-copy-3": {
-    "anchor": "center",
-    "vAnchor": "bottom",
-    "offsetX": 380.0,
-    "offsetY": 46.0,
-    "storageKey": "gcp_copy3_pos"
   },
   "ace-object": {
     "anchor": "center",
@@ -115,8 +114,8 @@
   "salesforce-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 120.0,
-    "offsetY": 890.0,
+    "offsetX": -262.99,
+    "offsetY": 49.62,
     "storageKey": "salesforce_pos"
   }
 }
