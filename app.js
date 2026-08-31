@@ -1028,7 +1028,7 @@
         pipeW = options.pipeW || 34; // Increased size of the pipe
       }
 
-      const pipeLen = Math.min(170, Math.max(badgeW + 18, dist * 0.44));
+      const pipeLen = options.pipeLen || Math.min(170, Math.max(badgeW + 18, dist * 0.44));
       const r = pipeW / 2;
 
       ctx.save();
@@ -1273,7 +1273,8 @@
             iconGap: 10,
             fontSize: 13.0,
             pipeW: 52,
-            badgeH: 38
+            badgeH: 38,
+            pipeLen: 230
           });
         }
       }
@@ -1403,7 +1404,8 @@
             iconGap: 10,
             fontSize: 13.0,
             pipeW: 52,
-            badgeH: 38
+            badgeH: 38,
+            pipeLen: 230
           });
         }
       }
