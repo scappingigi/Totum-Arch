@@ -1234,7 +1234,7 @@
             fontSize: 10.5,
             badgeH: 22,
             pipeW: 30,
-            pipeLen: 220
+            pipeLen: 190
           });
         }
 
@@ -1247,7 +1247,7 @@
             fontSize: 10.5,
             badgeH: 22,
             pipeW: 30,
-            pipeLen: 240
+            pipeLen: 215
           });
         }
 
@@ -1377,7 +1377,7 @@
             fontSize: 10.5,
             badgeH: 22,
             pipeW: 30,
-            pipeLen: 220
+            pipeLen: 190
           });
         }
 
@@ -1390,7 +1390,7 @@
             fontSize: 10.5,
             badgeH: 22,
             pipeW: 30,
-            pipeLen: 240
+            pipeLen: 215
           });
         }
 
