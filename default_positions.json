@@ -124,5 +124,12 @@
     "offsetX": 120.0,
     "offsetY": 890.0,
     "storageKey": "moma_pos"
+  },
+  "buganizer-object": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": 240.0,
+    "offsetY": 890.0,
+    "storageKey": "buganizer_pos"
   }
 }

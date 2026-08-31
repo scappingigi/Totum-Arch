@@ -620,3 +620,35 @@ body.mirrored-view .btn-sync-layout {
   padding: 2px 8px;
   white-space: nowrap;
 }
+
+/* --- Buganizer Item Specifics --- */
+.draggable-buganizer {
+  bottom: 180px;
+  width: 96px;
+  gap: 4px;
+}
+
+.buganizer-glow {
+  border-radius: 14px;
+  background: radial-gradient(circle, rgba(125, 151, 176, 0.35) 0%, rgba(32, 33, 36, 0.2) 50%, transparent 80%);
+}
+
+.buganizer-img {
+  width: 66px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 10px rgba(125, 151, 176, 0.25));
+  pointer-events: none;
+}
+
+.buganizer-label {
+  background: rgba(10, 16, 26, 0.94);
+  border: 1px solid rgba(125, 151, 176, 0.65);
+  color: #ffffff;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
