@@ -51,22 +51,22 @@
   "gcp-copy": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 525.56,
-    "offsetY": 46.48,
+    "offsetX": 522.0,
+    "offsetY": 45.0,
     "storageKey": "gcp_copy_pos"
   },
   "gcp-copy-2": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": -531.11,
-    "offsetY": 46.48,
+    "offsetX": -522.0,
+    "offsetY": 45.0,
     "storageKey": "gcp_copy2_pos"
   },
   "gcp-copy-3": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 416.67,
-    "offsetY": 46.48,
+    "offsetX": 406.0,
+    "offsetY": 45.0,
     "storageKey": "gcp_copy3_pos"
   },
   "adk-object": {
@@ -79,8 +79,8 @@
   "adk-copy": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 317.78,
-    "offsetY": 40.8,
+    "offsetX": 290.0,
+    "offsetY": 45.0,
     "storageKey": "adk_copy_pos"
   },
   "spanner-object": {
@@ -100,43 +100,43 @@
   "gdrive-copy-2": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": -425.56,
-    "offsetY": 46.46,
+    "offsetX": -406.0,
+    "offsetY": 45.0,
     "storageKey": "gdrive_copy2_pos"
   },
   "salesforce-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": -317.78,
-    "offsetY": 49.25,
+    "offsetX": -290.0,
+    "offsetY": 45.0,
     "storageKey": "salesforce_pos"
   },
   "moma-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": -224.44,
-    "offsetY": 47.22,
+    "offsetX": -174.0,
+    "offsetY": 45.0,
     "storageKey": "moma_pos"
   },
   "buganizer-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": 218.89,
-    "offsetY": 43.89,
+    "offsetX": 174.0,
+    "offsetY": 45.0,
     "storageKey": "buganizer_pos"
   },
   "horizon-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": -138.09,
-    "offsetY": 45.88,
+    "offsetX": -58.0,
+    "offsetY": 45.0,
     "storageKey": "horizon_pos"
   },
   "github-object": {
     "anchor": "center",
     "vAnchor": "bottom",
-    "offsetX": -46.26,
-    "offsetY": 41.35,
+    "offsetX": 58.0,
+    "offsetY": 45.0,
     "storageKey": "github_pos"
   }
 }
