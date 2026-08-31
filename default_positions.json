@@ -104,13 +104,6 @@
     "offsetY": 46.46,
     "storageKey": "gdrive_copy2_pos"
   },
-  "ace-object": {
-    "anchor": "center",
-    "vAnchor": "bottom",
-    "offsetX": -10,
-    "offsetY": 890.56,
-    "storageKey": "ace_pos"
-  },
   "salesforce-object": {
     "anchor": "center",
     "vAnchor": "bottom",

@@ -264,7 +264,7 @@
         let offsetY = 0;
 
         // Center-aligned items (e.g. tools below the wheel or near center column)
-        const isCenterTool = ['gcp-object', 'gcp-copy', 'gcp-copy-2', 'gcp-copy-3', 'spanner-object', 'gdrive-object', 'gdrive-copy-2', 'ace-object', 'adk-object', 'adk-copy', 'salesforce-object', 'moma-object', 'buganizer-object', 'horizon-object', 'github-object'].includes(item.elementId);
+        const isCenterTool = ['gcp-object', 'gcp-copy', 'gcp-copy-2', 'gcp-copy-3', 'spanner-object', 'gdrive-object', 'gdrive-copy-2', 'adk-object', 'adk-copy', 'salesforce-object', 'moma-object', 'buganizer-object', 'horizon-object', 'github-object'].includes(item.elementId);
         
         if (isCenterTool || (itemCenterX >= cx - 220 && itemCenterX <= cx + 220)) {
           anchor = 'center';
@@ -626,7 +626,9 @@
       this.lastTime = performance.now();
       this.vibrationPhase = 0;
 
-
+      // Preload ACE icon for conduit text badge
+      this.aceImg = new Image();
+      this.aceImg.src = 'ACE.png';
 
       this.initPulleys();
       this.setupEventListeners();
@@ -654,7 +656,6 @@
       new DraggableItem('gdrive-object', 'gdrive_pos', 260, -180);              // Bottom Mid Right-Center (Central Docs)
 
       new DraggableItem('gdrive-copy-2', 'gdrive_copy2_pos', 430, -180);        // Google Drive Copy 2
-      new DraggableItem('ace-object', 'ace_pos', 480, -180);                    // Bottom Mid Center-Right Floating Object
       new DraggableItem('salesforce-object', 'salesforce_pos', 590, -180);      // Salesforce (Vector) Object
       new DraggableItem('moma-object', 'moma_pos', -140, 240);                  // Moma Object
       new DraggableItem('buganizer-object', 'buganizer_pos', -240, 240);        // Buganizer Object
@@ -1010,21 +1011,21 @@
       const angle = Math.atan2(tanY, tanX);
 
       // 3. Shorter Transparent Pipe Geometry
-      const fontSize = 8.2;
+      const fontSize = options.fontSize || 8.2;
       ctx.font = `700 ${fontSize}px "Inter", -apple-system, BlinkMacSystemFont, sans-serif`;
       const textW = ctx.measureText(text.toUpperCase()).width;
 
       const iconSize = options.iconSize || 16;
-      const iconGap = 6;
+      const iconGap = options.iconGap || 6;
 
       let badgeW = Math.max(132, Math.round(textW + 22));
-      let badgeH = 19;
-      let pipeW = 25;
+      let badgeH = options.badgeH || 19;
+      let pipeW = options.pipeW || 25;
 
       if (options.icon) {
         badgeW = Math.max(160, Math.round(textW + 28 + iconSize + iconGap));
-        badgeH = 24;
-        pipeW = 34; // Increased size of the pipe
+        badgeH = options.badgeH || 24;
+        pipeW = options.pipeW || 34; // Increased size of the pipe
       }
 
       const pipeLen = Math.min(170, Math.max(badgeW + 18, dist * 0.44));
@@ -1145,7 +1146,7 @@
     drawDataConduits(ctx, timestamp) {
       if (!this.marinaRenderer) return;
       const marinaStatus = this.marinaRenderer.getProgress(timestamp);
-      const aceImg = document.querySelector('#ace-object img');
+
 
       // 1. LEFT CIRCUIT
       const wsLeftEl = document.getElementById('workspace-left');
@@ -1267,8 +1268,12 @@
             reverseBulge: false, // Curved the other way
             tPipe: 0.35,
             curveRatio: 0.16,
-            icon: aceImg,
-            iconSize: 16
+            icon: this.aceImg,
+            iconSize: 22,
+            iconGap: 8,
+            fontSize: 10.5,
+            pipeW: 42,
+            badgeH: 30
           });
         }
       }
@@ -1393,8 +1398,12 @@
             reverseBulge: true, // Mirrored outward/downward arc towards right edge of basement
             tPipe: 0.35,
             curveRatio: 0.16,
-            icon: aceImg,
-            iconSize: 16
+            icon: this.aceImg,
+            iconSize: 22,
+            iconGap: 8,
+            fontSize: 10.5,
+            pipeW: 42,
+            badgeH: 30
           });
         }
       }
