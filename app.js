@@ -611,9 +611,10 @@
 
   // --- Main Simulation App ---
   class DynamicBeltApp {
-    constructor() {
-      console.log("[DynamicBeltApp] Initializing. Port:", window.location.port);
-      if (window.location.port === '8020' || window.location.href.includes(':8020')) {
+    constructor(config) {
+      this.config = config || { readOnly: false };
+      console.log("[DynamicBeltApp] Initializing. Config:", this.config);
+      if (this.config.readOnly) {
         document.body.classList.add('mirrored-view');
       }
       this.canvas = document.getElementById('sim-canvas');
@@ -2084,10 +2085,24 @@
     }
   }
 
+  // Fetch configuration from server before starting the app
+  async function startApp() {
+    try {
+      const response = await fetch('/api/config');
+      const config = await response.json();
+      new DynamicBeltApp(config);
+    } catch (e) {
+      console.error("Failed to load server config, falling back to port detection:", e);
+      // Fallback detection in case backend is static / config fails
+      const isMirrored = window.location.port === '8020' || window.location.href.includes(':8020');
+      new DynamicBeltApp({ readOnly: isMirrored });
+    }
+  }
+
   // Initialize once DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => new DynamicBeltApp());
+    document.addEventListener('DOMContentLoaded', startApp);
   } else {
-    new DynamicBeltApp();
+    startApp();
   }
 })();

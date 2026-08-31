@@ -5,6 +5,7 @@ import os
 import sys
 
 PORT = 8022
+RUNNING_PORT = PORT
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
 class LayoutSyncHandler(http.server.SimpleHTTPRequestHandler):
@@ -40,6 +41,19 @@ class LayoutSyncHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        if self.path == '/api/config':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            is_read_only = (RUNNING_PORT == 8020)
+            config = {
+                "readOnly": is_read_only,
+                "port": RUNNING_PORT
+            }
+            self.wfile.write(json.dumps(config).encode('utf-8'))
+            return
+
         # Disable caching headers so edits and default_positions.json are always fresh
         super().do_GET()
 
@@ -57,6 +71,7 @@ if __name__ == '__main__':
         except ValueError:
             print(f"Invalid port: {sys.argv[1]}. Using default {PORT}")
 
+    RUNNING_PORT = port
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", port), LayoutSyncHandler) as httpd:
         print(f"Serving HTTP on port {port} with Layout Sync API enabled...")
