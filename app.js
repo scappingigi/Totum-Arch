@@ -1269,11 +1269,11 @@
             tPipe: 0.35,
             curveRatio: 0.16,
             icon: this.aceImg,
-            iconSize: 42,
-            iconGap: 14,
-            fontSize: 18.0,
-            pipeW: 76,
-            badgeH: 54
+            iconSize: 28,
+            iconGap: 10,
+            fontSize: 13.0,
+            pipeW: 52,
+            badgeH: 38
           });
         }
       }
@@ -1399,11 +1399,11 @@
             tPipe: 0.35,
             curveRatio: 0.16,
             icon: this.aceImg,
-            iconSize: 42,
-            iconGap: 14,
-            fontSize: 18.0,
-            pipeW: 76,
-            badgeH: 54
+            iconSize: 28,
+            iconGap: 10,
+            fontSize: 13.0,
+            pipeW: 52,
+            badgeH: 38
           });
         }
       }
