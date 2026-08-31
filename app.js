@@ -1249,12 +1249,15 @@
           });
         }
 
-        // 2c. Jetski Skills (Bottom) -> Personal Workspace: "Google Workspace"
+        // 2c. Jetski Skills (Bottom) -> Personal Workspace: "Google Workspace Skills"
         if (pWsLeft) {
-          this.drawCurvedSkillConduit(ctx, pSkillsBottom, pWsLeft, 'Google Workspace', timestamp, {
+          this.drawCurvedSkillConduit(ctx, pSkillsBottom, pWsLeft, 'Google Workspace Skills', timestamp, {
             reverseBulge: false,
             tPipe: 0.28,
-            curveRatio: 0.18
+            curveRatio: 0.18,
+            fontSize: 10.5,
+            badgeH: 22,
+            pipeW: 30
           });
         }
 
@@ -1386,12 +1389,15 @@
           });
         }
 
-        // 4c. Right Jetski Skills (Bottom) -> Right Personal Workspace: "Google Workspace"
+        // 4c. Right Jetski Skills (Bottom) -> Right Personal Workspace: "Google Workspace Skills"
         if (pWsRight) {
-          this.drawCurvedSkillConduit(ctx, pSkillsRightBottom, pWsRight, 'Google Workspace', timestamp, {
+          this.drawCurvedSkillConduit(ctx, pSkillsRightBottom, pWsRight, 'Google Workspace Skills', timestamp, {
             reverseBulge: true, // Mirrored arc towards right workspace
             tPipe: 0.28,
-            curveRatio: 0.18
+            curveRatio: 0.18,
+            fontSize: 10.5,
+            badgeH: 22,
+            pipeW: 30
           });
         }
 
