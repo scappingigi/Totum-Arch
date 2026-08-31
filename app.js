@@ -264,7 +264,7 @@
         let offsetY = 0;
 
         // Center-aligned items (e.g. tools below the wheel or near center column)
-        const isCenterTool = ['gcp-object', 'gcp-copy', 'gcp-copy-2', 'gcp-copy-3', 'spanner-object', 'gdrive-object', 'gdrive-copy-2', 'ace-object', 'adk-object', 'adk-copy'].includes(item.elementId);
+        const isCenterTool = ['gcp-object', 'gcp-copy', 'gcp-copy-2', 'gcp-copy-3', 'spanner-object', 'gdrive-object', 'gdrive-copy-2', 'ace-object', 'adk-object', 'adk-copy', 'salesforce-object'].includes(item.elementId);
         
         if (isCenterTool || (itemCenterX >= cx - 220 && itemCenterX <= cx + 220)) {
           anchor = 'center';
@@ -655,6 +655,7 @@
 
       new DraggableItem('gdrive-copy-2', 'gdrive_copy2_pos', 430, -180);        // Google Drive Copy 2
       new DraggableItem('ace-object', 'ace_pos', 480, -180);                    // Bottom Mid Center-Right Floating Object
+      new DraggableItem('salesforce-object', 'salesforce_pos', 590, -180);      // Salesforce (Vector) Object
 
       // Load Master Shared Layout Defaults (for Incognito & other browsers)
       LayoutManager.loadMasterDefaults();

@@ -111,5 +111,12 @@
     "offsetX": -10,
     "offsetY": 890.56,
     "storageKey": "ace_pos"
+  },
+  "salesforce-object": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": 120.0,
+    "offsetY": 890.0,
+    "storageKey": "salesforce_pos"
   }
 }

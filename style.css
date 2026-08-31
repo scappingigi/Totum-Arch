@@ -556,3 +556,35 @@ html, body {
 body.mirrored-view .btn-sync-layout {
   display: none !important;
 }
+
+/* --- Salesforce / Vector Item Specifics --- */
+.draggable-salesforce {
+  bottom: 180px;
+  width: 96px;
+  gap: 4px;
+}
+
+.salesforce-glow {
+  border-radius: 14px;
+  background: radial-gradient(circle, rgba(21, 137, 238, 0.35) 0%, rgba(0, 161, 224, 0.2) 40%, transparent 70%);
+}
+
+.salesforce-img {
+  width: 66px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 10px rgba(21, 137, 238, 0.35));
+  pointer-events: none;
+}
+
+.salesforce-label {
+  background: rgba(10, 16, 26, 0.94);
+  border: 1px solid rgba(21, 137, 238, 0.65);
+  color: #ffffff;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
