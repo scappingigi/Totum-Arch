@@ -1013,11 +1013,22 @@
       const fontSize = 8.2;
       ctx.font = `700 ${fontSize}px "Inter", -apple-system, BlinkMacSystemFont, sans-serif`;
       const textW = ctx.measureText(text.toUpperCase()).width;
-      const badgeW = Math.max(132, Math.round(textW + 22));
-      const badgeH = 19;
+
+      const iconSize = options.iconSize || 16;
+      const iconGap = 6;
+
+      let badgeW = Math.max(132, Math.round(textW + 22));
+      let badgeH = 19;
+      let pipeW = 25;
+
+      if (options.icon) {
+        badgeW = Math.max(160, Math.round(textW + 28 + iconSize + iconGap));
+        badgeH = 24;
+        pipeW = 34; // Increased size of the pipe
+      }
+
       const pipeLen = Math.min(170, Math.max(badgeW + 18, dist * 0.44));
-      const pipeW = 25;
-      const r = 12.5;
+      const r = pipeW / 2;
 
       ctx.save();
       ctx.translate(midX, midY);
@@ -1098,14 +1109,33 @@
       ctx.fill();
       ctx.stroke();
 
-      // Crisp White Text with subtle Cyan glow
-      ctx.shadowColor = 'rgba(0, 240, 255, 0.65)';
-      ctx.shadowBlur = 4;
-      ctx.font = `700 ${fontSize}px "Inter", -apple-system, BlinkMacSystemFont, sans-serif`;
-      ctx.fillStyle = '#ffffff';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(text.toUpperCase(), 0, 0.5);
+      // Crisp White Text with subtle Cyan glow (and optional icon)
+      if (options.icon && options.icon.complete && options.icon.naturalWidth !== 0) {
+        const totalW = iconSize + iconGap + textW;
+
+        // Draw icon on the left
+        const iconX = -totalW / 2;
+        const iconY = -iconSize / 2;
+        ctx.drawImage(options.icon, iconX, iconY, iconSize, iconSize);
+
+        // Draw text on the right
+        ctx.shadowColor = 'rgba(0, 240, 255, 0.65)';
+        ctx.shadowBlur = 4;
+        ctx.font = `700 ${fontSize}px "Inter", -apple-system, BlinkMacSystemFont, sans-serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text.toUpperCase(), iconX + iconSize + iconGap, 0.5);
+      } else {
+        // Standard centered text drawing
+        ctx.shadowColor = 'rgba(0, 240, 255, 0.65)';
+        ctx.shadowBlur = 4;
+        ctx.font = `700 ${fontSize}px "Inter", -apple-system, BlinkMacSystemFont, sans-serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text.toUpperCase(), 0, 0.5);
+      }
 
       ctx.restore(); // Restore text flip
       ctx.restore(); // Restore pipe transform
@@ -1115,6 +1145,7 @@
     drawDataConduits(ctx, timestamp) {
       if (!this.marinaRenderer) return;
       const marinaStatus = this.marinaRenderer.getProgress(timestamp);
+      const aceImg = document.querySelector('#ace-object img');
 
       // 1. LEFT CIRCUIT
       const wsLeftEl = document.getElementById('workspace-left');
@@ -1220,7 +1251,7 @@
           });
         }
 
-        // 2d. Jetski Skills (Left) -> Big Rectangular Basement (Left Side): "Other Skills and MCP"
+        // 2d. Jetski Skills (Left) -> Big Rectangular Basement (Left Side): "ACE Skills"
         const mainWheel = state.pulleys[0];
         if (mainWheel) {
           const baseW = mainWheel.radius * 4.15;
@@ -1232,10 +1263,12 @@
             x: rectX,
             y: footY + rectH / 2
           };
-          this.drawCurvedSkillConduit(ctx, pSkillsLeft, pBasementLeft, 'Other Skills and MCP', timestamp, {
+          this.drawCurvedSkillConduit(ctx, pSkillsLeft, pBasementLeft, 'ACE Skills', timestamp, {
             reverseBulge: false, // Curved the other way
             tPipe: 0.35,
-            curveRatio: 0.16
+            curveRatio: 0.16,
+            icon: aceImg,
+            iconSize: 16
           });
         }
       }
@@ -1344,7 +1377,7 @@
           });
         }
 
-        // 4d. Right Jetski Skills (Right) -> Big Rectangular Basement (Right Side): "Other Skills and MCP"
+        // 4d. Right Jetski Skills (Right) -> Big Rectangular Basement (Right Side): "ACE Skills"
         const mainWheel = state.pulleys[0];
         if (mainWheel) {
           const baseW = mainWheel.radius * 4.15;
@@ -1356,10 +1389,12 @@
             x: rectX + rectW,
             y: footY + rectH / 2
           };
-          this.drawCurvedSkillConduit(ctx, pSkillsRightRight, pBasementRight, 'Other Skills and MCP', timestamp, {
+          this.drawCurvedSkillConduit(ctx, pSkillsRightRight, pBasementRight, 'ACE Skills', timestamp, {
             reverseBulge: true, // Mirrored outward/downward arc towards right edge of basement
             tPipe: 0.35,
-            curveRatio: 0.16
+            curveRatio: 0.16,
+            icon: aceImg,
+            iconSize: 16
           });
         }
       }
