@@ -1257,7 +1257,8 @@
             curveRatio: 0.18,
             fontSize: 10.5,
             badgeH: 22,
-            pipeW: 30
+            pipeW: 30,
+            pipeLen: 210
           });
         }
 
@@ -1397,7 +1398,8 @@
             curveRatio: 0.18,
             fontSize: 10.5,
             badgeH: 22,
-            pipeW: 30
+            pipeW: 30,
+            pipeLen: 210
           });
         }
 
