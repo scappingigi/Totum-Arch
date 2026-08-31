@@ -117,5 +117,12 @@
     "offsetX": -262.99,
     "offsetY": 49.62,
     "storageKey": "salesforce_pos"
+  },
+  "moma-object": {
+    "anchor": "center",
+    "vAnchor": "bottom",
+    "offsetX": 120.0,
+    "offsetY": 890.0,
+    "storageKey": "moma_pos"
   }
 }
