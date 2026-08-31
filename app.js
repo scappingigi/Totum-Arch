@@ -264,7 +264,7 @@
         let offsetY = 0;
 
         // Center-aligned items (e.g. tools below the wheel or near center column)
-        const isCenterTool = ['gcp-object', 'gcp-copy', 'gcp-copy-2', 'spanner-object', 'gdrive-object', 'gdrive-copy-2', 'ace-object', 'adk-object'].includes(item.elementId);
+        const isCenterTool = ['gcp-object', 'gcp-copy', 'gcp-copy-2', 'gcp-copy-3', 'spanner-object', 'gdrive-object', 'gdrive-copy-2', 'ace-object', 'adk-object'].includes(item.elementId);
         
         if (isCenterTool || (itemCenterX >= cx - 220 && itemCenterX <= cx + 220)) {
           anchor = 'center';
@@ -647,6 +647,7 @@
       new DraggableItem('gcp-object', 'gcp_pos', 40, -180);                     // Bottom Mid Left (Totum Project)
       new DraggableItem('gcp-copy', 'gcp_copy_pos', 140, -180);                 // Google Cloud Copy
       new DraggableItem('gcp-copy-2', 'gcp_copy2_pos', 200, -180);              // Google Cloud Copy 2
+      new DraggableItem('gcp-copy-3', 'gcp_copy3_pos', 260, -180);              // Google Cloud Copy 3 (Prod Docs)
       new DraggableItem('adk-object', 'adk_pos', -40, -180);                    // Bottom Mid Right
       new DraggableItem('spanner-object', 'spanner_pos', 150, -180);            // Bottom Mid Center
       new DraggableItem('gdrive-object', 'gdrive_pos', 260, -180);              // Bottom Mid Right-Center (Central Docs)
