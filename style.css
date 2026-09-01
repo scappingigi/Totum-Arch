@@ -557,6 +557,13 @@ body.mirrored-view .btn-sync-layout {
   display: none !important;
 }
 
+body.mirrored-view .draggable-item,
+body.mirrored-view .draggable-item:hover,
+body.mirrored-view .draggable-item:active,
+body.mirrored-view #sim-canvas {
+  cursor: default !important;
+}
+
 /* --- Salesforce / Vector Item Specifics --- */
 .draggable-salesforce {
   bottom: 180px;

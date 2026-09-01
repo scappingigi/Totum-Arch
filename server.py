@@ -46,7 +46,7 @@ class LayoutSyncHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
-            is_read_only = (RUNNING_PORT == 8010)
+            is_read_only = (RUNNING_PORT in (8010, 8020))
             config = {
                 "readOnly": is_read_only,
                 "port": RUNNING_PORT

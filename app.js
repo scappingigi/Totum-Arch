@@ -441,8 +441,8 @@
       window.addEventListener('resize', onWindowResizeOrLoad);
       window.addEventListener('load', onWindowResizeOrLoad);
 
-      // Disable dragging if running on port 8010
-      if (window.location.port === '8010' || window.location.href.includes(':8010') || document.body.classList.contains('mirrored-view')) {
+      // Disable dragging if running on mirrored ports (8010 or 8020) or in mirrored-view
+      if (window.location.port === '8010' || window.location.port === '8020' || window.location.href.includes(':8010') || window.location.href.includes(':8020') || document.body.classList.contains('mirrored-view')) {
         return;
       }
 
@@ -667,7 +667,7 @@
 
       // Hook up Lock Master Layout Button
       const syncBtn = document.getElementById('btn-sync-layout');
-      const isMirrored = window.location.port === '8010' || window.location.href.includes(':8010') || document.body.classList.contains('mirrored-view');
+      const isMirrored = window.location.port === '8010' || window.location.port === '8020' || window.location.href.includes(':8010') || window.location.href.includes(':8020') || document.body.classList.contains('mirrored-view');
       if (syncBtn) {
         if (isMirrored) {
           syncBtn.style.display = 'none';
@@ -679,7 +679,7 @@
         }
       }
 
-      // If running on port 8010, poll for layout updates to mirror 8011
+      // If running on mirrored ports (8010/8020), poll for layout updates to mirror master
       if (isMirrored) {
         setInterval(() => {
           LayoutManager.loadMasterDefaults();
@@ -2061,7 +2061,7 @@
     setupEventListeners() {
       window.addEventListener('resize', () => this.resize());
 
-      const isMirrored = window.location.port === '8010' || window.location.href.includes(':8010') || document.body.classList.contains('mirrored-view');
+      const isMirrored = window.location.port === '8010' || window.location.port === '8020' || window.location.href.includes(':8010') || window.location.href.includes(':8020') || document.body.classList.contains('mirrored-view');
 
       if (!isMirrored) {
         this.canvas.addEventListener('pointerdown', (e) => this.onPointerDown(e));
@@ -2160,7 +2160,7 @@
     } catch (e) {
       console.error("Failed to load server config, falling back to port detection:", e);
       // Fallback detection in case backend is static / config fails
-      const isMirrored = window.location.port === '8010' || window.location.href.includes(':8010');
+      const isMirrored = window.location.port === '8010' || window.location.port === '8020' || window.location.href.includes(':8010') || window.location.href.includes(':8020');
       new DynamicBeltApp({ readOnly: isMirrored });
     }
   }
