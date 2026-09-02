@@ -760,3 +760,169 @@ body.mirrored-view #sim-canvas {
   text-transform: uppercase;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
+
+/* --- Stage Tracker & Gradual Architecture Presentation UI --- */
+.stage-tracker {
+  position: absolute;
+  top: 155px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 100;
+  background: rgba(10, 16, 26, 0.88);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 6px 14px;
+  border-radius: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 240, 255, 0.2);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.stage-tracker:hover {
+  border-color: rgba(0, 240, 255, 0.7);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), 0 0 24px rgba(0, 240, 255, 0.35);
+}
+
+.tracker-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tracker-step-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  outline: none;
+}
+
+.tracker-step-btn:hover {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: rgba(0, 240, 255, 0.5);
+  color: #ffffff;
+}
+
+.tracker-step-btn.active {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.3) 0%, rgba(134, 107, 246, 0.35) 100%);
+  border-color: #00f0ff;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.45);
+}
+
+.tracker-step-btn .step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0, 240, 255, 0.2);
+  color: #00f0ff;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.tracker-step-btn.active .step-badge {
+  background: #00f0ff;
+  color: #050b14;
+}
+
+.tracker-divider {
+  width: 14px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tracker-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  padding-left: 8px;
+}
+
+.tracker-icon-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.tracker-icon-btn:hover {
+  background: rgba(0, 240, 255, 0.2);
+  border-color: #00f0ff;
+  color: #00f0ff;
+}
+
+.tracker-play-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.tracker-play-btn:hover,
+.tracker-play-btn.playing {
+  background: rgba(0, 240, 255, 0.25);
+  border-color: #00f0ff;
+  color: #00f0ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
+}
+
+.tracker-subtitle {
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  color: rgba(0, 240, 255, 0.75);
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* Stage-based DOM element visibility and smooth transitions */
+.draggable-item {
+  transition: opacity 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.stage-1 [data-stage="2"],
+.stage-1 [data-stage="3"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.92) !important;
+}
+
+.stage-2 [data-stage="3"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.92) !important;
+}

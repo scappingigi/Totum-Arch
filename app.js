@@ -692,8 +692,103 @@
       // Initial velocity
       state.pulleys[0].angularVel = (state.targetRPM * state.motorDir) * (2 * Math.PI / 60);
 
+      // Initialize Gradual Presentation Stage Tracking
+      window.AppInstance = this;
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlStage = parseInt(urlParams.get('stage'), 10);
+      this.currentStage = (urlStage >= 1 && urlStage <= 3) ? urlStage : 3;
+      this.targetAlphaStage2 = (this.currentStage >= 2) ? 1.0 : 0.0;
+      this.targetAlphaStage3 = (this.currentStage >= 3) ? 1.0 : 0.0;
+      this.alphaStage2 = this.targetAlphaStage2;
+      this.alphaStage3 = this.targetAlphaStage3;
+      this.isAutoPlaying = false;
+      this.autoPlayInterval = null;
+      this.updateStageUI();
+
       this.loop = this.loop.bind(this);
       requestAnimationFrame(this.loop);
+    }
+
+    setStage(stage, isAuto = false) {
+      this.currentStage = Math.max(1, Math.min(3, stage));
+      this.targetAlphaStage2 = (this.currentStage >= 2) ? 1.0 : 0.0;
+      this.targetAlphaStage3 = (this.currentStage >= 3) ? 1.0 : 0.0;
+
+      if (!isAuto && this.isAutoPlaying) {
+        this.toggleAutoPlay(false);
+      }
+
+      this.updateStageUI();
+    }
+
+    nextStage() {
+      const next = this.currentStage < 3 ? this.currentStage + 1 : 1;
+      this.setStage(next);
+    }
+
+    prevStage() {
+      const prev = this.currentStage > 1 ? this.currentStage - 1 : 3;
+      this.setStage(prev);
+    }
+
+    toggleAutoPlay(forceState = null) {
+      if (forceState !== null) {
+        this.isAutoPlaying = forceState;
+      } else {
+        this.isAutoPlaying = !this.isAutoPlaying;
+      }
+
+      const playBtn = document.getElementById('tracker-play');
+      if (this.isAutoPlaying) {
+        if (playBtn) {
+          playBtn.classList.add('playing');
+          playBtn.innerHTML = '⏸ Pause Tour';
+        }
+        if (this.autoPlayInterval) clearInterval(this.autoPlayInterval);
+        this.autoPlayInterval = setInterval(() => {
+          const next = this.currentStage < 3 ? this.currentStage + 1 : 1;
+          this.setStage(next, true);
+        }, 5500);
+      } else {
+        if (playBtn) {
+          playBtn.classList.remove('playing');
+          playBtn.innerHTML = '⏵ Auto Play';
+        }
+        if (this.autoPlayInterval) {
+          clearInterval(this.autoPlayInterval);
+          this.autoPlayInterval = null;
+        }
+      }
+    }
+
+    updateStageUI() {
+      const appEl = document.getElementById('app');
+      if (appEl) {
+        appEl.classList.remove('stage-1', 'stage-2', 'stage-3');
+        appEl.classList.add(`stage-${this.currentStage}`);
+      }
+
+      for (let i = 1; i <= 3; i++) {
+        const btn = document.getElementById(`step-btn-${i}`);
+        if (btn) {
+          if (i === this.currentStage) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        }
+      }
+
+      const subtitleEl = document.getElementById('tracker-subtitle');
+      if (subtitleEl) {
+        if (this.currentStage === 1) {
+          subtitleEl.innerHTML = '<strong>Stage 1/3:</strong> Core Transmission &amp; Totum — Large &amp; Small Wheels, Belts, and Support Truss';
+        } else if (this.currentStage === 2) {
+          subtitleEl.innerHTML = '<strong>Stage 2/3:</strong> Local Second Brains — Workspaces, Marina Sidecars, Jetskis &amp; Conduit Skills';
+        } else {
+          subtitleEl.innerHTML = '<strong>Stage 3/3:</strong> Full Architecture — Shared Services, Cybernetic Basement &amp; ACE Skills';
+        }
+      }
     }
 
     initPulleys() {
@@ -788,6 +883,11 @@
       }
 
       this.vibrationPhase += delta * Math.max(8, Math.abs(driver.angularVel) * 4);
+
+      // Smooth alpha interpolation for stage transitions
+      const lerpSpeed = 1 - Math.exp(-7 * delta);
+      this.alphaStage2 += (this.targetAlphaStage2 - this.alphaStage2) * lerpSpeed;
+      this.alphaStage3 += (this.targetAlphaStage3 - this.alphaStage3) * lerpSpeed;
     }
 
     // --- Draw Flow Arrowhead ---
@@ -1147,124 +1247,237 @@
       if (!this.marinaRenderer) return;
       const marinaStatus = this.marinaRenderer.getProgress(timestamp);
 
+      // --- STAGE 2 CONDUITS & CIRCUITS ---
+      if (this.alphaStage2 > 0.001) {
+        ctx.save();
+        ctx.globalAlpha = this.alphaStage2;
 
-      // 1. LEFT CIRCUIT
-      const wsLeftEl = document.getElementById('workspace-left');
-      const marinaLeftEl = document.getElementById('marina-left');
-      const leftWheel = state.pulleys[1];
+        // 1. LEFT CIRCUIT
+        const wsLeftEl = document.getElementById('workspace-left');
+        const marinaLeftEl = document.getElementById('marina-left');
+        const leftWheel = state.pulleys[1];
 
-      let pWsLeft = null;
-      let pMarinaLeft = null;
+        let pWsLeft = null;
+        let pMarinaLeft = null;
 
-      if (wsLeftEl) {
-        const wsLeftRect = wsLeftEl.getBoundingClientRect();
-        pWsLeft = {
-          x: wsLeftRect.left + wsLeftRect.width / 2,
-          y: wsLeftRect.top + wsLeftRect.height / 2
-        };
+        if (wsLeftEl) {
+          const wsLeftRect = wsLeftEl.getBoundingClientRect();
+          pWsLeft = {
+            x: wsLeftRect.left + wsLeftRect.width / 2,
+            y: wsLeftRect.top + wsLeftRect.height / 2
+          };
+        }
+
+        if (marinaLeftEl) {
+          const marinaLeftRect = marinaLeftEl.getBoundingClientRect();
+          pMarinaLeft = {
+            x: marinaLeftRect.left + marinaLeftRect.width / 2,
+            y: marinaLeftRect.top + marinaLeftRect.height / 2
+          };
+
+          if (pWsLeft) {
+            this.drawCurvedLightTube(ctx, pWsLeft, pMarinaLeft, marinaStatus, {
+              curveAmountRatio: 0.22,
+              collarStartColor: '#00f0ff',
+              collarEndColor: '#f7a8e8',
+              numLights: 10,
+              reverseBulge: true,
+              speedMultiplier: 1.0
+            });
+          }
+
+          if (leftWheel) {
+            const pLeftWheel = {
+              x: leftWheel.x,
+              y: leftWheel.y
+            };
+            this.drawCurvedLightTube(ctx, pMarinaLeft, pLeftWheel, marinaStatus, {
+              curveAmountRatio: 0.18,
+              collarStartColor: '#f7a8e8',
+              collarEndColor: '#00f0ff',
+              numLights: 12,
+              reverseBulge: true,
+              speedMultiplier: 1.0
+            });
+          }
+        }
+
+        // 2. LEFT JETSKI SKILLS CONDUITS (Stage 2 parts: Retriever, Curator, Workspace)
+        const skillsEl = document.getElementById('jetski-skills-badge') || document.getElementById('jetski-object');
+        if (skillsEl) {
+          const skillsRect = skillsEl.getBoundingClientRect();
+          
+          const pSkillsRight = {
+            x: skillsRect.right,
+            y: skillsRect.top + skillsRect.height / 2
+          };
+
+          const pSkillsBottom = {
+            x: skillsRect.left + skillsRect.width / 2,
+            y: skillsRect.bottom
+          };
+
+          // 2a. Jetski Skills (Right) -> Left Wheel (Top Apex): "Totum Retriever Skills"
+          if (leftWheel) {
+            const pLeftWheelTop = {
+              x: leftWheel.x,
+              y: leftWheel.y - leftWheel.radius
+            };
+            this.drawCurvedSkillConduit(ctx, pSkillsRight, pLeftWheelTop, 'Totum Retriever Skills', timestamp, {
+              reverseBulge: true,
+              tPipe: 0.30,
+              curveRatio: 0.16,
+              fontSize: 10.5,
+              badgeH: 22,
+              pipeW: 30,
+              pipeLen: 190
+            });
+          }
+
+          // 2b. Jetski Skills (Bottom) -> Marina Wheel: "Totum Local Curator Skills"
+          if (pMarinaLeft) {
+            this.drawCurvedSkillConduit(ctx, pSkillsBottom, pMarinaLeft, 'Totum Local Curator Skills', timestamp, {
+              reverseBulge: true,
+              tPipe: 0.48,
+              curveRatio: 0.18,
+              fontSize: 10.5,
+              badgeH: 22,
+              pipeW: 30,
+              pipeLen: 215
+            });
+          }
+
+          // 2c. Jetski Skills (Bottom) -> Personal Workspace: "Google Workspace Skills"
+          if (pWsLeft) {
+            this.drawCurvedSkillConduit(ctx, pSkillsBottom, pWsLeft, 'Google Workspace Skills', timestamp, {
+              reverseBulge: false,
+              tPipe: 0.28,
+              curveRatio: 0.18,
+              fontSize: 10.5,
+              badgeH: 22,
+              pipeW: 30,
+              pipeLen: 210
+            });
+          }
+        }
+
+        // 3. RIGHT CIRCUIT
+        const wsRightEl = document.getElementById('workspace-right');
+        const marinaRightEl = document.getElementById('marina-right');
+        const rightWheel = state.pulleys[2];
+
+        let pWsRight = null;
+        let pMarinaRight = null;
+
+        if (wsRightEl) {
+          const wsRightRect = wsRightEl.getBoundingClientRect();
+          pWsRight = {
+            x: wsRightRect.left + wsRightRect.width / 2,
+            y: wsRightRect.top + wsRightRect.height / 2
+          };
+        }
+
+        if (marinaRightEl) {
+          const marinaRightRect = marinaRightEl.getBoundingClientRect();
+          pMarinaRight = {
+            x: marinaRightRect.left + marinaRightRect.width / 2,
+            y: marinaRightRect.top + marinaRightRect.height / 2
+          };
+
+          if (pWsRight) {
+            this.drawCurvedLightTube(ctx, pWsRight, pMarinaRight, marinaStatus, {
+              curveAmountRatio: 0.22,
+              collarStartColor: '#00f0ff',
+              collarEndColor: '#f7a8e8',
+              numLights: 10,
+              reverseBulge: false,
+              speedMultiplier: 1.0
+            });
+          }
+
+          if (rightWheel) {
+            const pRightWheel = {
+              x: rightWheel.x,
+              y: rightWheel.y
+            };
+            this.drawCurvedLightTube(ctx, pMarinaRight, pRightWheel, marinaStatus, {
+              curveAmountRatio: 0.18,
+              collarStartColor: '#f7a8e8',
+              collarEndColor: '#00f0ff',
+              numLights: 12,
+              reverseBulge: false,
+              speedMultiplier: 1.0
+            });
+          }
+        }
+
+        // 4. RIGHT JETSKI SKILLS CONDUITS (Stage 2 parts: Retriever, Curator, Workspace)
+        const skillsRightEl = document.getElementById('jetski-skills-badge-right') || document.getElementById('jetski-object-right');
+        if (skillsRightEl) {
+          const skillsRightRect = skillsRightEl.getBoundingClientRect();
+
+          const pSkillsRightLeft = {
+            x: skillsRightRect.left,
+            y: skillsRightRect.top + skillsRightRect.height / 2
+          };
+
+          const pSkillsRightBottom = {
+            x: skillsRightRect.left + skillsRightRect.width / 2,
+            y: skillsRightRect.bottom
+          };
+
+          // 4a. Right Jetski Skills (Left) -> Right Wheel (Top Apex): "Totum Retriever Skills"
+          if (rightWheel) {
+            const pRightWheelTop = {
+              x: rightWheel.x,
+              y: rightWheel.y - rightWheel.radius
+            };
+            this.drawCurvedSkillConduit(ctx, pSkillsRightLeft, pRightWheelTop, 'Totum Retriever Skills', timestamp, {
+              reverseBulge: false,
+              tPipe: 0.30,
+              curveRatio: 0.16,
+              fontSize: 10.5,
+              badgeH: 22,
+              pipeW: 30,
+              pipeLen: 190
+            });
+          }
+
+          // 4b. Right Jetski Skills (Bottom) -> Right Marina Wheel: "Totum Local Curator Skills"
+          if (pMarinaRight) {
+            this.drawCurvedSkillConduit(ctx, pSkillsRightBottom, pMarinaRight, 'Totum Local Curator Skills', timestamp, {
+              reverseBulge: false,
+              tPipe: 0.48,
+              curveRatio: 0.18,
+              fontSize: 10.5,
+              badgeH: 22,
+              pipeW: 30,
+              pipeLen: 215
+            });
+          }
+
+          // 4c. Right Jetski Skills (Bottom) -> Right Personal Workspace: "Google Workspace Skills"
+          if (pWsRight) {
+            this.drawCurvedSkillConduit(ctx, pSkillsRightBottom, pWsRight, 'Google Workspace Skills', timestamp, {
+              reverseBulge: true,
+              tPipe: 0.28,
+              curveRatio: 0.18,
+              fontSize: 10.5,
+              badgeH: 22,
+              pipeW: 30,
+              pipeLen: 210
+            });
+          }
+        }
+
+        ctx.restore();
       }
 
-      if (marinaLeftEl) {
-        const marinaLeftRect = marinaLeftEl.getBoundingClientRect();
-        pMarinaLeft = {
-          x: marinaLeftRect.left + marinaLeftRect.width / 2,
-          y: marinaLeftRect.top + marinaLeftRect.height / 2
-        };
+      // --- STAGE 3 CONDUITS (ACE Skills linking to Basement) ---
+      if (this.alphaStage3 > 0.001) {
+        ctx.save();
+        ctx.globalAlpha = this.alphaStage3;
 
-        if (pWsLeft) {
-          this.drawCurvedLightTube(ctx, pWsLeft, pMarinaLeft, marinaStatus, {
-            curveAmountRatio: 0.22,
-            collarStartColor: '#00f0ff',
-            collarEndColor: '#f7a8e8',
-            numLights: 10,
-            reverseBulge: true,
-            speedMultiplier: 1.0
-          });
-        }
-
-        if (leftWheel) {
-          const pLeftWheel = {
-            x: leftWheel.x,
-            y: leftWheel.y
-          };
-          this.drawCurvedLightTube(ctx, pMarinaLeft, pLeftWheel, marinaStatus, {
-            curveAmountRatio: 0.18,
-            collarStartColor: '#f7a8e8',
-            collarEndColor: '#00f0ff',
-            numLights: 12,
-            reverseBulge: true,
-            speedMultiplier: 1.0
-          });
-        }
-      }
-
-      // 2. LEFT JETSKI SKILLS CONDUITS
-      const skillsEl = document.getElementById('jetski-skills-badge') || document.getElementById('jetski-object');
-      if (skillsEl) {
-        const skillsRect = skillsEl.getBoundingClientRect();
-        
-        // Left side of Skills badge
-        const pSkillsLeft = {
-          x: skillsRect.left,
-          y: skillsRect.top + skillsRect.height / 2
-        };
-
-        // Right side of Skills badge
-        const pSkillsRight = {
-          x: skillsRect.right,
-          y: skillsRect.top + skillsRect.height / 2
-        };
-
-        // Bottom center of Skills badge
-        const pSkillsBottom = {
-          x: skillsRect.left + skillsRect.width / 2,
-          y: skillsRect.bottom
-        };
-
-        // 2a. Jetski Skills (Right) -> Left Wheel (Top Apex): "Totum Retriever Skills"
-        if (leftWheel) {
-          const pLeftWheelTop = {
-            x: leftWheel.x,
-            y: leftWheel.y - leftWheel.radius
-          };
-          this.drawCurvedSkillConduit(ctx, pSkillsRight, pLeftWheelTop, 'Totum Retriever Skills', timestamp, {
-            reverseBulge: true,
-            tPipe: 0.30,
-            curveRatio: 0.16,
-            fontSize: 10.5,
-            badgeH: 22,
-            pipeW: 30,
-            pipeLen: 190
-          });
-        }
-
-        // 2b. Jetski Skills (Bottom) -> Marina Wheel: "Totum Local Curator Skills"
-        if (pMarinaLeft) {
-          this.drawCurvedSkillConduit(ctx, pSkillsBottom, pMarinaLeft, 'Totum Local Curator Skills', timestamp, {
-            reverseBulge: true,
-            tPipe: 0.48,
-            curveRatio: 0.18,
-            fontSize: 10.5,
-            badgeH: 22,
-            pipeW: 30,
-            pipeLen: 215
-          });
-        }
-
-        // 2c. Jetski Skills (Bottom) -> Personal Workspace: "Google Workspace Skills"
-        if (pWsLeft) {
-          this.drawCurvedSkillConduit(ctx, pSkillsBottom, pWsLeft, 'Google Workspace Skills', timestamp, {
-            reverseBulge: false,
-            tPipe: 0.28,
-            curveRatio: 0.18,
-            fontSize: 10.5,
-            badgeH: 22,
-            pipeW: 30,
-            pipeLen: 210
-          });
-        }
-
-        // 2d. Jetski Skills (Left) -> Big Rectangular Basement (Left Side): "ACE Skills"
         const mainWheel = state.pulleys[0];
         if (mainWheel) {
           const baseW = mainWheel.radius * 4.15;
@@ -1272,166 +1485,61 @@
           const rectW = Math.max(980, Math.min(this.width - 48, baseW * 1.68));
           const rectH = 108;
           const rectX = mainWheel.x - rectW / 2;
-          const pBasementLeft = {
-            x: rectX,
-            y: footY + rectH / 2
-          };
-          this.drawCurvedSkillConduit(ctx, pSkillsLeft, pBasementLeft, 'ACE Skills', timestamp, {
-            reverseBulge: false, // Curved the other way
-            tPipe: 0.35,
-            curveRatio: 0.16,
-            icon: this.aceImg,
-            iconSize: 28,
-            iconGap: 10,
-            fontSize: 13.0,
-            pipeW: 52,
-            badgeH: 38,
-            pipeLen: 230
-          });
-        }
-      }
 
-      // 3. RIGHT CIRCUIT (Specular)
-      const wsRightEl = document.getElementById('workspace-right');
-      const marinaRightEl = document.getElementById('marina-right');
-      const rightWheel = state.pulleys[2];
+          // 2d. Left Jetski Skills (Left) -> Big Rectangular Basement (Left Side): "ACE Skills"
+          const skillsLeftEl = document.getElementById('jetski-skills-badge') || document.getElementById('jetski-object');
+          if (skillsLeftEl) {
+            const skillsRect = skillsLeftEl.getBoundingClientRect();
+            const pSkillsLeft = {
+              x: skillsRect.left,
+              y: skillsRect.top + skillsRect.height / 2
+            };
+            const pBasementLeft = {
+              x: rectX,
+              y: footY + rectH / 2
+            };
+            this.drawCurvedSkillConduit(ctx, pSkillsLeft, pBasementLeft, 'ACE Skills', timestamp, {
+              reverseBulge: false,
+              tPipe: 0.35,
+              curveRatio: 0.16,
+              icon: this.aceImg,
+              iconSize: 28,
+              iconGap: 10,
+              fontSize: 13.0,
+              pipeW: 52,
+              badgeH: 38,
+              pipeLen: 230
+            });
+          }
 
-      let pWsRight = null;
-      let pMarinaRight = null;
-
-      if (wsRightEl) {
-        const wsRightRect = wsRightEl.getBoundingClientRect();
-        pWsRight = {
-          x: wsRightRect.left + wsRightRect.width / 2,
-          y: wsRightRect.top + wsRightRect.height / 2
-        };
-      }
-
-      if (marinaRightEl) {
-        const marinaRightRect = marinaRightEl.getBoundingClientRect();
-        pMarinaRight = {
-          x: marinaRightRect.left + marinaRightRect.width / 2,
-          y: marinaRightRect.top + marinaRightRect.height / 2
-        };
-
-        if (pWsRight) {
-          this.drawCurvedLightTube(ctx, pWsRight, pMarinaRight, marinaStatus, {
-            curveAmountRatio: 0.22,
-            collarStartColor: '#00f0ff',
-            collarEndColor: '#f7a8e8',
-            numLights: 10,
-            reverseBulge: false,
-            speedMultiplier: 1.0
-          });
-        }
-
-        if (rightWheel) {
-          const pRightWheel = {
-            x: rightWheel.x,
-            y: rightWheel.y
-          };
-          this.drawCurvedLightTube(ctx, pMarinaRight, pRightWheel, marinaStatus, {
-            curveAmountRatio: 0.18,
-            collarStartColor: '#f7a8e8',
-            collarEndColor: '#00f0ff',
-            numLights: 12,
-            reverseBulge: false,
-            speedMultiplier: 1.0
-          });
-        }
-      }
-
-      // 4. RIGHT JETSKI SKILLS CONDUITS (Specular Mirrored)
-      const skillsRightEl = document.getElementById('jetski-skills-badge-right') || document.getElementById('jetski-object-right');
-      if (skillsRightEl) {
-        const skillsRightRect = skillsRightEl.getBoundingClientRect();
-
-        // Left side of Right Skills badge
-        const pSkillsRightLeft = {
-          x: skillsRightRect.left,
-          y: skillsRightRect.top + skillsRightRect.height / 2
-        };
-
-        // Right side of Right Skills badge
-        const pSkillsRightRight = {
-          x: skillsRightRect.right,
-          y: skillsRightRect.top + skillsRightRect.height / 2
-        };
-
-        // Bottom center of Right Skills badge
-        const pSkillsRightBottom = {
-          x: skillsRightRect.left + skillsRightRect.width / 2,
-          y: skillsRightRect.bottom
-        };
-
-        // 4a. Right Jetski Skills (Left) -> Right Wheel (Top Apex): "Totum Retriever Skills"
-        if (rightWheel) {
-          const pRightWheelTop = {
-            x: rightWheel.x,
-            y: rightWheel.y - rightWheel.radius
-          };
-          this.drawCurvedSkillConduit(ctx, pSkillsRightLeft, pRightWheelTop, 'Totum Retriever Skills', timestamp, {
-            reverseBulge: false, // Mirrored upward/inward arch towards right wheel top
-            tPipe: 0.30,
-            curveRatio: 0.16,
-            fontSize: 10.5,
-            badgeH: 22,
-            pipeW: 30,
-            pipeLen: 190
-          });
+          // 4d. Right Jetski Skills (Right) -> Big Rectangular Basement (Right Side): "ACE Skills"
+          const skillsRightEl = document.getElementById('jetski-skills-badge-right') || document.getElementById('jetski-object-right');
+          if (skillsRightEl) {
+            const skillsRightRect = skillsRightEl.getBoundingClientRect();
+            const pSkillsRightRight = {
+              x: skillsRightRect.right,
+              y: skillsRightRect.top + skillsRightRect.height / 2
+            };
+            const pBasementRight = {
+              x: rectX + rectW,
+              y: footY + rectH / 2
+            };
+            this.drawCurvedSkillConduit(ctx, pSkillsRightRight, pBasementRight, 'ACE Skills', timestamp, {
+              reverseBulge: true,
+              tPipe: 0.35,
+              curveRatio: 0.16,
+              icon: this.aceImg,
+              iconSize: 28,
+              iconGap: 10,
+              fontSize: 13.0,
+              pipeW: 52,
+              badgeH: 38,
+              pipeLen: 230
+            });
+          }
         }
 
-        // 4b. Right Jetski Skills (Bottom) -> Right Marina Wheel: "Totum Local Curator Skills"
-        if (pMarinaRight) {
-          this.drawCurvedSkillConduit(ctx, pSkillsRightBottom, pMarinaRight, 'Totum Local Curator Skills', timestamp, {
-            reverseBulge: false, // Mirrored downward arch towards right marina wheel
-            tPipe: 0.48,
-            curveRatio: 0.18,
-            fontSize: 10.5,
-            badgeH: 22,
-            pipeW: 30,
-            pipeLen: 215
-          });
-        }
-
-        // 4c. Right Jetski Skills (Bottom) -> Right Personal Workspace: "Google Workspace Skills"
-        if (pWsRight) {
-          this.drawCurvedSkillConduit(ctx, pSkillsRightBottom, pWsRight, 'Google Workspace Skills', timestamp, {
-            reverseBulge: true, // Mirrored arc towards right workspace
-            tPipe: 0.28,
-            curveRatio: 0.18,
-            fontSize: 10.5,
-            badgeH: 22,
-            pipeW: 30,
-            pipeLen: 210
-          });
-        }
-
-        // 4d. Right Jetski Skills (Right) -> Big Rectangular Basement (Right Side): "ACE Skills"
-        const mainWheel = state.pulleys[0];
-        if (mainWheel) {
-          const baseW = mainWheel.radius * 4.15;
-          const footY = mainWheel.y + mainWheel.radius + 126;
-          const rectW = Math.max(980, Math.min(this.width - 48, baseW * 1.68));
-          const rectH = 108;
-          const rectX = mainWheel.x - rectW / 2;
-          const pBasementRight = {
-            x: rectX + rectW,
-            y: footY + rectH / 2
-          };
-          this.drawCurvedSkillConduit(ctx, pSkillsRightRight, pBasementRight, 'ACE Skills', timestamp, {
-            reverseBulge: true, // Mirrored outward/downward arc towards right edge of basement
-            tPipe: 0.35,
-            curveRatio: 0.16,
-            icon: this.aceImg,
-            iconSize: 28,
-            iconGap: 10,
-            fontSize: 13.0,
-            pipeW: 52,
-            badgeH: 38,
-            pipeLen: 230
-          });
-        }
+        ctx.restore();
       }
     }
 
@@ -1959,51 +2067,56 @@
       ctx.strokeStyle = 'rgba(0, 240, 255, 0.45)';
       ctx.stroke();
 
-      // 4. Wide Rectangular Basement Attached Just Below the Triangle (Fitted to page)
-      const rectW = Math.max(980, Math.min(this.width - 48, baseW * 1.68));
-      const rectH = 108;
-      const rectX = x - rectW / 2;
-      const rectY = footY; // Attached directly to the bottom line of the triangle
+      // 4. Wide Rectangular Basement Attached Just Below the Triangle (Stage 3)
+      if (this.alphaStage3 > 0.001) {
+        ctx.save();
+        ctx.globalAlpha = this.alphaStage3;
 
-      // Rectangular Basement Drop Shadow
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
-      ctx.shadowBlur = 20;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 8;
+        const rectW = Math.max(980, Math.min(this.width - 48, baseW * 1.68));
+        const rectH = 108;
+        const rectX = x - rectW / 2;
+        const rectY = footY; // Attached directly to the bottom line of the triangle
 
-      // Rectangular Chassis Body
-      const rectGrad = ctx.createLinearGradient(x, rectY, x, rectY + rectH);
-      rectGrad.addColorStop(0, '#101724');
-      rectGrad.addColorStop(0.5, '#151e2e');
-      rectGrad.addColorStop(1, '#0c1018');
+        // Rectangular Basement Drop Shadow
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 8;
 
-      ctx.fillStyle = rectGrad;
-      ctx.beginPath();
-      if (ctx.roundRect) {
-        ctx.roundRect(rectX, rectY, rectW, rectH, 6);
-      } else {
-        ctx.rect(rectX, rectY, rectW, rectH);
+        // Rectangular Chassis Body
+        const rectGrad = ctx.createLinearGradient(x, rectY, x, rectY + rectH);
+        rectGrad.addColorStop(0, '#101724');
+        rectGrad.addColorStop(0.5, '#151e2e');
+        rectGrad.addColorStop(1, '#0c1018');
+
+        ctx.fillStyle = rectGrad;
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(rectX, rectY, rectW, rectH, 6);
+        } else {
+          ctx.rect(rectX, rectY, rectW, rectH);
+        }
+        ctx.fill();
+
+        // Clear Shadow
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+
+        // Outer Bevel Border on Rectangular Basement
+        ctx.lineWidth = 2.0;
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.55)';
+        ctx.stroke();
+
+        // Top Connection Seam Highlight
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.75)';
+        ctx.beginPath();
+        ctx.moveTo(leftX, footY);
+        ctx.lineTo(rightX, footY);
+        ctx.stroke();
+
+        ctx.restore();
       }
-      ctx.fill();
-
-      // Clear Shadow
-      ctx.shadowColor = 'transparent';
-      ctx.shadowBlur = 0;
-
-      // Outer Bevel Border on Rectangular Basement
-      ctx.lineWidth = 2.0;
-      ctx.strokeStyle = 'rgba(0, 240, 255, 0.55)';
-      ctx.stroke();
-
-      // Top Connection Seam Highlight
-      ctx.lineWidth = 2.5;
-      ctx.strokeStyle = 'rgba(0, 240, 255, 0.75)';
-      ctx.beginPath();
-      ctx.moveTo(leftX, footY);
-      ctx.lineTo(rightX, footY);
-      ctx.stroke();
-
-
 
       ctx.restore();
     }
@@ -2071,6 +2184,32 @@
       }
 
       window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        // Presentation stage shortcuts (available across all screens)
+        if (e.key === '1') {
+          this.setStage(1);
+          return;
+        } else if (e.key === '2') {
+          this.setStage(2);
+          return;
+        } else if (e.key === '3') {
+          this.setStage(3);
+          return;
+        } else if (e.key === 'ArrowRight' || e.key === ']') {
+          this.nextStage();
+          return;
+        } else if (e.key === 'ArrowLeft' || e.key === '[') {
+          this.prevStage();
+          return;
+        } else if (e.key === 'p' || e.key === 'P') {
+          if (!e.metaKey && !e.ctrlKey) {
+            e.preventDefault();
+            this.toggleAutoPlay();
+            return;
+          }
+        }
+
         if (isMirrored) {
           return;
         }

@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=retina_marina_fix_v11">
+  <link rel="stylesheet" href="style.css?v=tracker_stage_v12">
 </head>
 <body>
   <div class="app-container" id="app">
@@ -25,10 +25,38 @@
       <span class="title-secondary">With local second brains</span>
       <span class="title-secondary">And central collective brain</span>
     </h1>
+
+    <!-- Gradual Reveal Architecture Tracker -->
+    <div id="stage-tracker" class="stage-tracker" title="Gradual Architecture Reveal Tracker">
+      <div class="tracker-bar">
+        <button class="tracker-step-btn" data-step="1" id="step-btn-1" onclick="window.AppInstance &amp;&amp; window.AppInstance.setStage(1)" title="Stage 1: Core Mechanical Base (Large &amp; Small Wheels, Belts, and Triangle Truss)">
+          <span class="step-badge">1</span>
+          <span class="step-label">Core Transmission</span>
+        </button>
+        <div class="tracker-divider"></div>
+        <button class="tracker-step-btn" data-step="2" id="step-btn-2" onclick="window.AppInstance &amp;&amp; window.AppInstance.setStage(2)" title="Stage 2: Second Brains, Workspaces, Marina Sidecars &amp; Jetski Skills Conduits">
+          <span class="step-badge">2</span>
+          <span class="step-label">Local Second Brains</span>
+        </button>
+        <div class="tracker-divider"></div>
+        <button class="tracker-step-btn active" data-step="3" id="step-btn-3" onclick="window.AppInstance &amp;&amp; window.AppInstance.setStage(3)" title="Stage 3: Full Architecture: Central Shared Services, Cybernetic Basement &amp; ACE Skills">
+          <span class="step-badge">3</span>
+          <span class="step-label">Collective Services</span>
+        </button>
+        
+        <div class="tracker-nav-group">
+          <button class="tracker-icon-btn" id="tracker-prev" onclick="window.AppInstance &amp;&amp; window.AppInstance.prevStage()" title="Previous Stage (← Left Arrow)">◀</button>
+          <button class="tracker-play-btn" id="tracker-play" onclick="window.AppInstance &amp;&amp; window.AppInstance.toggleAutoPlay()" title="Toggle Auto-Play Presentation (P)">⏵ Auto Play</button>
+          <button class="tracker-icon-btn" id="tracker-next" onclick="window.AppInstance &amp;&amp; window.AppInstance.nextStage()" title="Next Stage (→ Right Arrow)">▶</button>
+        </div>
+      </div>
+      <div id="tracker-subtitle" class="tracker-subtitle">Stage 3 of 3: Full Architecture — Shared Services, Basement &amp; ACE Skills</div>
+    </div>
+
     <canvas id="sim-canvas"></canvas>
 
-    <!-- Draggable Positionable Jetski Object (Left) -->
-    <div id="jetski-object" class="draggable-item draggable-jetski" title="Jetski (Left) - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Jetski Object (Left) [Stage 2] -->
+    <div id="jetski-object" class="draggable-item draggable-jetski" data-stage="2" title="Jetski (Left) - Click &amp; drag to position anywhere on the page">
       <div class="item-glow jetski-glow"></div>
       <div class="item-label jetski-top-label">Jetski</div>
       <div class="jetski-img-wrapper">
@@ -51,8 +79,8 @@
       </div>
     </div>
 
-    <!-- Draggable Positionable Jetski Object (Right Mirrored) -->
-    <div id="jetski-object-right" class="draggable-item draggable-jetski draggable-jetski-right" title="Jetski (Right) - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Jetski Object (Right Mirrored) [Stage 2] -->
+    <div id="jetski-object-right" class="draggable-item draggable-jetski draggable-jetski-right" data-stage="2" title="Jetski (Right) - Click &amp; drag to position anywhere on the page">
       <div class="item-glow jetski-glow"></div>
       <div class="item-label jetski-top-label">Jetski</div>
       <div class="jetski-img-wrapper">
@@ -75,64 +103,64 @@
       </div>
     </div>
 
-    <!-- Draggable Positionable Google Cloud Object -->
-    <div id="gcp-object" class="draggable-item draggable-gcp" title="Totum Project - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Google Cloud Object [Stage 3] -->
+    <div id="gcp-object" class="draggable-item draggable-gcp" data-stage="3" title="Totum Project - Click &amp; drag to position anywhere on the page">
       <div class="item-glow gcp-glow"></div>
       <img src="GoogleCloud.svg?v=official_v2" alt="Totum Project" class="gcp-img" draggable="false">
       <div class="item-label gcp-label">Totum Project</div>
     </div>
 
-    <!-- Draggable Positionable Google Cloud Copy (Qwiklabs) -->
-    <div id="gcp-copy" class="draggable-item draggable-gcp" title="Qwiklabs - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Google Cloud Copy (Qwiklabs) [Stage 3] -->
+    <div id="gcp-copy" class="draggable-item draggable-gcp" data-stage="3" title="Qwiklabs - Click &amp; drag to position anywhere on the page">
       <div class="item-glow gcp-glow"></div>
       <img src="GoogleCloud.svg?v=official_v2" alt="Qwiklabs" class="gcp-img" draggable="false">
       <div class="item-label gcp-label">Qwiklabs</div>
     </div>
 
-    <!-- Draggable Positionable Google Cloud Copy 2 (go/demos) -->
-    <div id="gcp-copy-2" class="draggable-item draggable-gcp" title="go/demos - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Google Cloud Copy 2 (go/demos) [Stage 3] -->
+    <div id="gcp-copy-2" class="draggable-item draggable-gcp" data-stage="3" title="go/demos - Click &amp; drag to position anywhere on the page">
       <div class="item-glow gcp-glow"></div>
       <img src="GoogleCloud.svg?v=official_v2" alt="go/demos" class="gcp-img" draggable="false">
       <div class="item-label gcp-label">go/demos</div>
     </div>
 
-    <!-- Draggable Positionable Google Cloud Copy 3 (Prod Docs) -->
-    <div id="gcp-copy-3" class="draggable-item draggable-gcp" title="Prod Docs - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Google Cloud Copy 3 (Prod Docs) [Stage 3] -->
+    <div id="gcp-copy-3" class="draggable-item draggable-gcp" data-stage="3" title="Prod Docs - Click &amp; drag to position anywhere on the page">
       <div class="item-glow gcp-glow"></div>
       <img src="GoogleCloud.svg?v=official_v2" alt="Prod Docs" class="gcp-img" draggable="false">
       <div class="item-label gcp-label">Prod Docs</div>
     </div>
 
-    <!-- Draggable Positionable ADK (Central Curator) Object -->
-    <div id="adk-object" class="draggable-item draggable-adk" title="Central Curator (Google ADK) - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable ADK (Central Curator) Object [Stage 3] -->
+    <div id="adk-object" class="draggable-item draggable-adk" data-stage="3" title="Central Curator (Google ADK) - Click &amp; drag to position anywhere on the page">
       <div class="item-glow adk-glow"></div>
       <img src="ADK.png?v=official_adk_v1" alt="Central Curator" class="adk-img" draggable="false">
       <div class="item-label adk-label">Central Curator</div>
     </div>
 
-    <!-- Draggable Positionable Central Curator Copy (WAF) -->
-    <div id="adk-copy" class="draggable-item draggable-adk" title="WAF - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Central Curator Copy (WAF) [Stage 3] -->
+    <div id="adk-copy" class="draggable-item draggable-adk" data-stage="3" title="WAF - Click &amp; drag to position anywhere on the page">
       <div class="item-glow adk-glow"></div>
       <img src="ADK.png?v=official_adk_v1" alt="WAF" class="adk-img" draggable="false">
       <div class="item-label adk-label">WAF</div>
     </div>
 
-    <!-- Draggable Positionable Spanner (Semantic Links) Object -->
-    <div id="spanner-object" class="draggable-item draggable-spanner" title="Semantic Links (Spanner) - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Spanner (Semantic Links) Object [Stage 3] -->
+    <div id="spanner-object" class="draggable-item draggable-spanner" data-stage="3" title="Semantic Links (Spanner) - Click &amp; drag to position anywhere on the page">
       <div class="item-glow spanner-glow"></div>
       <img src="Spanner.png?v=1" alt="Semantic Links" class="spanner-img" draggable="false">
       <div class="item-label spanner-label">Semantic Links</div>
     </div>
 
-    <!-- Draggable Positionable Google Drive Object -->
-    <div id="gdrive-object" class="draggable-item draggable-gdrive" title="Central Docs - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Google Drive Object [Stage 3] -->
+    <div id="gdrive-object" class="draggable-item draggable-gdrive" data-stage="3" title="Central Docs - Click &amp; drag to position anywhere on the page">
       <div class="item-glow gdrive-glow"></div>
       <img src="gdrive.png?v=1" alt="Central Docs" class="gdrive-img" draggable="false">
       <div class="item-label gdrive-label">Central Docs</div>
     </div>
 
-    <!-- Draggable Positionable Google Drive Copy 2 (Shared Drive) -->
-    <div id="gdrive-copy-2" class="draggable-item draggable-gdrive" title="Shared Drive - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Google Drive Copy 2 (Shared Drive) [Stage 3] -->
+    <div id="gdrive-copy-2" class="draggable-item draggable-gdrive" data-stage="3" title="Shared Drive - Click &amp; drag to position anywhere on the page">
       <div class="item-glow gdrive-glow"></div>
       <img src="gdrive.png?v=1" alt="Shared Drive" class="gdrive-img" draggable="false">
       <div class="item-label gdrive-label">Shared Drive</div>
@@ -140,43 +168,43 @@
 
 
 
-    <!-- Draggable Positionable Salesforce (Vector) Object -->
-    <div id="salesforce-object" class="draggable-item draggable-salesforce" title="Vector - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Salesforce (Vector) Object [Stage 3] -->
+    <div id="salesforce-object" class="draggable-item draggable-salesforce" data-stage="3" title="Vector - Click &amp; drag to position anywhere on the page">
       <div class="item-glow salesforce-glow"></div>
       <img src="Salesforce.svg?v=2" alt="Vector" class="salesforce-img" draggable="false">
       <div class="item-label salesforce-label">Vector</div>
     </div>
 
-    <!-- Draggable Positionable Moma Object -->
-    <div id="moma-object" class="draggable-item draggable-moma" title="Moma - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Moma Object [Stage 3] -->
+    <div id="moma-object" class="draggable-item draggable-moma" data-stage="3" title="Moma - Click &amp; drag to position anywhere on the page">
       <div class="item-glow moma-glow"></div>
       <img src="Moma.svg?v=1" alt="Moma" class="moma-img" draggable="false">
       <div class="item-label moma-label">Moma</div>
     </div>
 
-    <!-- Draggable Positionable Buganizer Object -->
-    <div id="buganizer-object" class="draggable-item draggable-buganizer" title="Buganizer - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Buganizer Object [Stage 3] -->
+    <div id="buganizer-object" class="draggable-item draggable-buganizer" data-stage="3" title="Buganizer - Click &amp; drag to position anywhere on the page">
       <div class="item-glow buganizer-glow"></div>
       <img src="Buganizer.svg?v=1" alt="Buganizer" class="buganizer-img" draggable="false">
       <div class="item-label buganizer-label">Buganizer</div>
     </div>
 
-    <!-- Draggable Positionable Horizon Object -->
-    <div id="horizon-object" class="draggable-item draggable-horizon" title="Horizon - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Horizon Object [Stage 3] -->
+    <div id="horizon-object" class="draggable-item draggable-horizon" data-stage="3" title="Horizon - Click &amp; drag to position anywhere on the page">
       <div class="item-glow horizon-glow"></div>
       <img src="Horizon.svg?v=1" alt="Horizon" class="horizon-img" draggable="false">
       <div class="item-label horizon-label">Horizon</div>
     </div>
 
-    <!-- Draggable Positionable GitHub Object -->
-    <div id="github-object" class="draggable-item draggable-github" title="GitHub - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable GitHub Object [Stage 3] -->
+    <div id="github-object" class="draggable-item draggable-github" data-stage="3" title="GitHub - Click &amp; drag to position anywhere on the page">
       <div class="item-glow github-glow"></div>
       <img src="GitHub.svg?v=1" alt="GitHub" class="github-img" draggable="false">
       <div class="item-label github-label">GitHub</div>
     </div>
 
-    <!-- LEFT CIRCUIT: Personal Workspace (Left) -->
-    <div id="workspace-left" class="draggable-item draggable-workspace" title="Personal Workspace (Left) - Drag to position">
+    <!-- LEFT CIRCUIT: Personal Workspace (Left) [Stage 2] -->
+    <div id="workspace-left" class="draggable-item draggable-workspace" data-stage="2" title="Personal Workspace (Left) - Drag to position">
       <div class="item-glow workspace-glow"></div>
       <div class="workspace-card">
         <div class="workspace-header">Personal Workspace</div>
@@ -184,8 +212,8 @@
       </div>
     </div>
 
-    <!-- LEFT CIRCUIT: Marina Capsule Sidecar (Left) -->
-    <div id="marina-left" class="draggable-item draggable-marina" title="Marina Capsule Sidecar (Left) - Steps 90° every 4s">
+    <!-- LEFT CIRCUIT: Marina Capsule Sidecar (Left) [Stage 2] -->
+    <div id="marina-left" class="draggable-item draggable-marina" data-stage="2" title="Marina Capsule Sidecar (Left) - Steps 90° every 4s">
       <div class="item-glow marina-glow"></div>
       <div class="marina-wheel-wrapper">
         <canvas id="marina-canvas-left" width="120" height="120"></canvas>
@@ -196,8 +224,8 @@
       </div>
     </div>
 
-    <!-- RIGHT CIRCUIT: Specular Personal Workspace (Right) -->
-    <div id="workspace-right" class="draggable-item draggable-workspace" title="Personal Workspace (Right) - Drag to position">
+    <!-- RIGHT CIRCUIT: Specular Personal Workspace (Right) [Stage 2] -->
+    <div id="workspace-right" class="draggable-item draggable-workspace" data-stage="2" title="Personal Workspace (Right) - Drag to position">
       <div class="item-glow workspace-glow"></div>
       <div class="workspace-card">
         <div class="workspace-header">Personal Workspace</div>
@@ -205,8 +233,8 @@
       </div>
     </div>
 
-    <!-- RIGHT CIRCUIT: Specular Marina Capsule Sidecar (Right) -->
-    <div id="marina-right" class="draggable-item draggable-marina" title="Marina Capsule Sidecar (Right) - Steps 90° every 4s">
+    <!-- RIGHT CIRCUIT: Specular Marina Capsule Sidecar (Right) [Stage 2] -->
+    <div id="marina-right" class="draggable-item draggable-marina" data-stage="2" title="Marina Capsule Sidecar (Right) - Steps 90° every 4s">
       <div class="item-glow marina-glow"></div>
       <div class="marina-wheel-wrapper">
         <canvas id="marina-canvas-right" width="120" height="120"></canvas>
@@ -224,6 +252,6 @@
     <div id="sync-toast" class="sync-toast"></div>
   </div>
 
-  <script src="app.js?v=anchor_aware_sync_v50"></script>
+  <script src="app.js?v=tracker_stage_v51"></script>
 </body>
 </html>
