@@ -692,6 +692,11 @@
       // Initial velocity
       state.pulleys[0].angularVel = (state.targetRPM * state.motorDir) * (2 * Math.PI / 60);
 
+      // Initialize Firewall Toggle State for Left & Right Feed Conduits
+      this.firewallLeftAllowed = true;
+      this.firewallRightAllowed = true;
+      this.firewallHitTargets = [];
+
       // Initialize Gradual Presentation Stage Tracking
       window.AppInstance = this;
       const urlParams = new URLSearchParams(window.location.search);
@@ -705,6 +710,17 @@
 
       this.loop = this.loop.bind(this);
       requestAnimationFrame(this.loop);
+    }
+
+    toggleFirewall(side) {
+      if (side === 'left') {
+        this.firewallLeftAllowed = !this.firewallLeftAllowed;
+      } else if (side === 'right') {
+        this.firewallRightAllowed = !this.firewallRightAllowed;
+      } else {
+        this.firewallLeftAllowed = !this.firewallLeftAllowed;
+        this.firewallRightAllowed = this.firewallLeftAllowed;
+      }
     }
 
     setStage(stage) {
@@ -1605,8 +1621,185 @@
       ctx.restore();
     }
 
-    // --- Belt Drawing with Accurate Flow Arrowheads & Conduit Pipes ---
-    drawDirectBelt(c1, c2, theme) {
+    // --- Draw Cybernetic Firewall Gate with Interactive Checkbox on Top ---
+    drawFirewall(ctx, fwX, fwY, spanAngle, isAllowed, cbPos, side = 'left') {
+      ctx.save();
+
+      // 1. Firewall Gate Casing clamped across the belt
+      ctx.save();
+      ctx.translate(fwX, fwY);
+      ctx.rotate(spanAngle);
+
+      const gateW = 34; // Transverse width across the belt
+      const gateH = 15; // Longitudinal depth along belt
+      const halfW = gateW / 2;
+      const halfH = gateH / 2;
+
+      // Outer glow around the gate
+      ctx.shadowColor = isAllowed ? 'rgba(0, 240, 255, 0.65)' : 'rgba(255, 45, 85, 0.85)';
+      ctx.shadowBlur = isAllowed ? 10 : 16;
+
+      // Gate Housing Gradient
+      const frameGrad = ctx.createLinearGradient(0, -halfW, 0, halfW);
+      if (isAllowed) {
+        frameGrad.addColorStop(0, 'rgba(0, 240, 255, 0.35)');
+        frameGrad.addColorStop(0.25, 'rgba(12, 22, 34, 0.95)');
+        frameGrad.addColorStop(0.75, 'rgba(12, 22, 34, 0.95)');
+        frameGrad.addColorStop(1, 'rgba(0, 240, 255, 0.35)');
+      } else {
+        frameGrad.addColorStop(0, 'rgba(255, 45, 85, 0.65)');
+        frameGrad.addColorStop(0.25, 'rgba(34, 10, 18, 0.96)');
+        frameGrad.addColorStop(0.75, 'rgba(34, 10, 18, 0.96)');
+        frameGrad.addColorStop(1, 'rgba(255, 45, 85, 0.65)');
+      }
+
+      ctx.fillStyle = frameGrad;
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(-halfH, -halfW, gateH, gateW, 4);
+      } else {
+        ctx.rect(-halfH, -halfW, gateH, gateW);
+      }
+      ctx.fill();
+
+      // Gate Border
+      ctx.lineWidth = 1.6;
+      ctx.strokeStyle = isAllowed ? '#00f0ff' : '#ff2d55';
+      ctx.stroke();
+
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+
+      // Metallic Side Clamps
+      ctx.fillStyle = isAllowed ? 'rgba(0, 240, 255, 0.85)' : 'rgba(255, 45, 85, 0.9)';
+      ctx.fillRect(-halfH - 1, -halfW - 2.5, gateH + 2, 3);
+      ctx.fillRect(-halfH - 1, halfW - 0.5, gateH + 2, 3);
+
+      // Barrier Field / Laser Gate
+      if (isAllowed) {
+        // Pass-through Conduit Field (Cyan / Green glowing center slit)
+        ctx.strokeStyle = 'rgba(0, 230, 118, 0.9)';
+        ctx.lineWidth = 1.8;
+        ctx.shadowColor = '#00e676';
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.moveTo(0, -halfW + 3);
+        ctx.lineTo(0, halfW - 3);
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(0, -halfW * 0.45, 1.2, 0, Math.PI * 2);
+        ctx.arc(0, 0, 1.2, 0, Math.PI * 2);
+        ctx.arc(0, halfW * 0.45, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // Active Laser Barrier (Vibrant Crimson Red Laser Beam)
+        ctx.strokeStyle = '#ff1744';
+        ctx.lineWidth = 2.4;
+        ctx.shadowColor = '#ff1744';
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.moveTo(0, -halfW + 2);
+        ctx.lineTo(0, halfW - 2);
+        ctx.stroke();
+
+        // Laser Emitter Nodes
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#ff5252';
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.arc(0, -halfW + 3.5, 1.8, 0, Math.PI * 2);
+        ctx.arc(0, halfW - 3.5, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore(); // Restore gate rotation
+
+      // 2. High-Tech Support Stem from Gate to Checkbox
+      ctx.save();
+      ctx.strokeStyle = isAllowed ? 'rgba(0, 240, 255, 0.65)' : 'rgba(255, 45, 85, 0.75)';
+      ctx.lineWidth = 1.4;
+      ctx.setLineDash([2, 2]);
+      ctx.beginPath();
+      ctx.moveTo(fwX, fwY);
+      ctx.lineTo(cbPos.x, cbPos.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      // 3. Checkbox on Top of the Firewall (Always upright in screen coordinates)
+      ctx.save();
+      ctx.translate(cbPos.x, cbPos.y);
+
+      const boxSize = 22;
+      const halfBox = boxSize / 2;
+
+      // Box Glow
+      ctx.shadowColor = isAllowed ? 'rgba(0, 230, 118, 0.85)' : 'rgba(255, 45, 85, 0.9)';
+      ctx.shadowBlur = isAllowed ? 12 : 14;
+
+      // Box Background
+      ctx.fillStyle = isAllowed ? 'rgba(8, 24, 16, 0.95)' : 'rgba(28, 8, 14, 0.95)';
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(-halfBox, -halfBox, boxSize, boxSize, 4.5);
+      } else {
+        ctx.rect(-halfBox, -halfBox, boxSize, boxSize);
+      }
+      ctx.fill();
+
+      // Box Border
+      ctx.lineWidth = 1.8;
+      ctx.strokeStyle = isAllowed ? '#00e676' : '#ff2d55';
+      ctx.stroke();
+
+      // Checkbox Mark (Green Check ✓ or Red Cross ✕)
+      if (isAllowed) {
+        // Bold Green Checkmark ✓
+        ctx.strokeStyle = '#00e676';
+        ctx.lineWidth = 2.4;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.shadowColor = '#00e676';
+        ctx.shadowBlur = 6;
+
+        ctx.beginPath();
+        ctx.moveTo(-5.5, 0);
+        ctx.lineTo(-1.5, 4.5);
+        ctx.lineTo(5.5, -4.5);
+        ctx.stroke();
+      } else {
+        // Bold Red Cross ✕
+        ctx.strokeStyle = '#ff2d55';
+        ctx.lineWidth = 2.4;
+        ctx.lineCap = 'round';
+        ctx.shadowColor = '#ff2d55';
+        ctx.shadowBlur = 6;
+
+        ctx.beginPath();
+        ctx.moveTo(-4.5, -4.5);
+        ctx.lineTo(4.5, 4.5);
+        ctx.moveTo(4.5, -4.5);
+        ctx.lineTo(-4.5, 4.5);
+        ctx.stroke();
+      }
+
+      // "FIREWALL" Micro Badge on Top
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      ctx.font = '700 7.5px "Inter", -apple-system, sans-serif';
+      ctx.fillStyle = isAllowed ? '#7ef7ea' : '#ff7b92';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('FIREWALL', 0, -halfBox - 3);
+
+      ctx.restore();
+      ctx.restore();
+    }
+
+    // --- Belt Drawing with Accurate Flow Arrowheads, Firewall & Conduit Pipes ---
+    drawDirectBelt(c1, c2, theme, pulleyIndex = 1) {
       const tangents = getOuterTangents(c1, c2);
       if (!tangents) return;
 
@@ -1662,6 +1855,12 @@
       const offsetLeft = ((state.beltOffset % arrowSpacing) + arrowSpacing) % arrowSpacing;
       const offsetRight = ((state.beltOffset % arrowSpacing) + arrowSpacing) % arrowSpacing;
 
+      // Firewall Parameters on the "Feed Collective Brain" pipe
+      const isAllowed = (pulleyIndex === 1) ? this.firewallLeftAllowed : this.firewallRightAllowed;
+      const t_fw = 0.17;
+      const s_fw = totalSpan * t_fw;
+
+      // 1. Consult Span Arrowheads (Always flowing)
       for (let s = offsetLeft; s < totalSpan - 10; s += arrowSpacing) {
         if (s < 12) continue;
         const t = s / totalSpan;
@@ -1670,8 +1869,13 @@
         this.drawFlowArrow(ctx, tx, ty, leftArrowAngle, 6.5, theme.beltArrow);
       }
 
+      // 2. Feed Span Arrowheads (Gated by Firewall Checkbox)
       for (let s = offsetRight; s < totalSpan - 10; s += arrowSpacing) {
         if (s < 12) continue;
+        // If firewall is on Red X, hide arrowheads moving from the firewall to the big wheel
+        if (!isAllowed && s >= s_fw - 6) {
+          continue;
+        }
         const t = s / totalSpan;
         const tx = rightSpan.p2.x + (rightSpan.p1.x - rightSpan.p2.x) * t + normRightX * sagAmp * (1 - 4 * (t - 0.5) ** 2);
         const ty = rightSpan.p2.y + (rightSpan.p1.y - rightSpan.p2.y) * t + normRightY * sagAmp * (1 - 4 * (t - 0.5) ** 2);
@@ -1680,6 +1884,36 @@
 
       ctx.restore();
 
+      // Compute Firewall & Checkbox Coordinates on the Feed Span
+      const feedStart = isCW ? rightSpan.p2 : leftSpan.p2;
+      const feedEnd = isCW ? rightSpan.p1 : leftSpan.p1;
+      const feedNormX = isCW ? normRightX : normLeftX;
+      const feedNormY = isCW ? normRightY : normLeftY;
+      const feedAngle = Math.atan2(feedEnd.y - feedStart.y, feedEnd.x - feedStart.x);
+
+      const sagFactor = (1 - 4 * (t_fw - 0.5) ** 2);
+      const fwX = feedStart.x + (feedEnd.x - feedStart.x) * t_fw + feedNormX * sagAmp * sagFactor;
+      const fwY = feedStart.y + (feedEnd.y - feedStart.y) * t_fw + feedNormY * sagAmp * sagFactor;
+
+      const cbPos = {
+        x: fwX + (pulleyIndex === 1 ? 6 : -6),
+        y: fwY - 26
+      };
+
+      // Register Hit Target for Click & Hover Testing
+      if (this.firewallHitTargets) {
+        this.firewallHitTargets.push({
+          id: (pulleyIndex === 1) ? 'left' : 'right',
+          cbPos: cbPos,
+          fwPos: { x: fwX, y: fwY },
+          radius: 18
+        });
+      }
+
+      // Draw Firewall & Checkbox
+      this.drawFirewall(ctx, fwX, fwY, feedAngle, isAllowed, cbPos, (pulleyIndex === 1) ? 'left' : 'right');
+
+      // Draw Conduit Pipes ("Consult Collective Brain" & "Feed Collective Brain")
       if (isCW) {
         this.drawConduitPipe(ctx, leftSpan.p1, leftSpan.p2, theme, 'Consult Collective Brain');
         this.drawConduitPipe(ctx, rightSpan.p2, rightSpan.p1, theme, 'Feed Collective Brain');
@@ -2077,6 +2311,9 @@
       const ctx = this.ctx;
       const theme = state.theme;
 
+      // Reset Hit Targets for this frame
+      this.firewallHitTargets = [];
+
       // 1. Main Background
       ctx.clearRect(0, 0, this.width, this.height);
 
@@ -2099,8 +2336,8 @@
       if (this.alphaStage2 > 0.001) {
         ctx.save();
         ctx.globalAlpha = this.alphaStage2;
-        this.drawDirectBelt(state.pulleys[0], state.pulleys[1], theme);
-        this.drawDirectBelt(state.pulleys[0], state.pulleys[2], theme);
+        this.drawDirectBelt(state.pulleys[0], state.pulleys[1], theme, 1);
+        this.drawDirectBelt(state.pulleys[0], state.pulleys[2], theme, 2);
 
         // 5. Top 2 Small Wheels ("Personal Totum" with Brain artwork) [Stage 2]
         this.drawWheel(state.pulleys[1], theme, false);
@@ -2159,6 +2396,9 @@
         } else if (e.key === 'ArrowLeft' || e.key === '[') {
           this.prevStage();
           return;
+        } else if (e.key === 'f' || e.key === 'F') {
+          this.toggleFirewall('all');
+          return;
         }
 
         if (isMirrored) {
@@ -2192,6 +2432,18 @@
       const pos = this.getPointerPos(e);
       state.dragMoved = false;
 
+      // 1. Check Firewall Checkbox Hit Targets (Stage 2+)
+      if (this.alphaStage2 >= 0.5 && this.firewallHitTargets && this.firewallHitTargets.length > 0) {
+        for (const target of this.firewallHitTargets) {
+          const distCb = Math.hypot(pos.x - target.cbPos.x, pos.y - target.cbPos.y);
+          const distFw = Math.hypot(pos.x - target.fwPos.x, pos.y - target.fwPos.y);
+          if (distCb <= 18 || distFw <= 20) {
+            this.toggleFirewall(target.id);
+            return;
+          }
+        }
+      }
+
       for (let i = 0; i < state.pulleys.length; i++) {
         const p = state.pulleys[i];
         if (!p.isDriver && this.alphaStage2 < 0.5) continue; // Small wheels are hidden in Stage 1
@@ -2208,15 +2460,31 @@
     }
 
     onPointerMove(e) {
+      const pos = this.getPointerPos(e);
+
+      if (!state.isDraggingWheel) {
+        let isOverFirewall = false;
+        if (this.alphaStage2 >= 0.5 && this.firewallHitTargets && this.firewallHitTargets.length > 0) {
+          for (const target of this.firewallHitTargets) {
+            const distCb = Math.hypot(pos.x - target.cbPos.x, pos.y - target.cbPos.y);
+            const distFw = Math.hypot(pos.x - target.fwPos.x, pos.y - target.fwPos.y);
+            if (distCb <= 18 || distFw <= 20) {
+              isOverFirewall = true;
+              break;
+            }
+          }
+        }
+        this.canvas.style.cursor = isOverFirewall ? 'pointer' : 'default';
+      }
+
       if (!state.isDraggingWheel || state.draggedWheelIdx === -1) return;
 
-      const pos = this.getPointerPos(e);
       const p = state.pulleys[state.draggedWheelIdx];
       const currentAngle = Math.atan2(pos.y - p.y, pos.x - p.x);
 
       let deltaAngle = currentAngle - state.dragLastAngle;
       while (deltaAngle > Math.PI) deltaAngle -= Math.PI * 2;
-      while (deltaAngle < -Math.PI) deltaAngle += Math.PI * 2;
+      while (deltaAngle < -Math.PI) deltaAngle -= Math.PI * 2;
 
       if (Math.abs(deltaAngle) > 0.01) {
         state.dragMoved = true;
