@@ -727,7 +727,7 @@ body.mirrored-view #sim-canvas {
 /* Page Header Title */
 .page-title {
   position: absolute;
-  top: 64px;
+  top: 90px;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
