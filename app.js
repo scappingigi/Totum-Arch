@@ -701,23 +701,16 @@
       this.targetAlphaStage3 = (this.currentStage >= 3) ? 1.0 : 0.0;
       this.alphaStage2 = this.targetAlphaStage2;
       this.alphaStage3 = this.targetAlphaStage3;
-      this.isAutoPlaying = false;
-      this.autoPlayInterval = null;
       this.updateStageUI();
 
       this.loop = this.loop.bind(this);
       requestAnimationFrame(this.loop);
     }
 
-    setStage(stage, isAuto = false) {
+    setStage(stage) {
       this.currentStage = Math.max(1, Math.min(3, stage));
       this.targetAlphaStage2 = (this.currentStage >= 2) ? 1.0 : 0.0;
       this.targetAlphaStage3 = (this.currentStage >= 3) ? 1.0 : 0.0;
-
-      if (!isAuto && this.isAutoPlaying) {
-        this.toggleAutoPlay(false);
-      }
-
       this.updateStageUI();
     }
 
@@ -729,36 +722,6 @@
     prevStage() {
       const prev = this.currentStage > 1 ? this.currentStage - 1 : 3;
       this.setStage(prev);
-    }
-
-    toggleAutoPlay(forceState = null) {
-      if (forceState !== null) {
-        this.isAutoPlaying = forceState;
-      } else {
-        this.isAutoPlaying = !this.isAutoPlaying;
-      }
-
-      const playBtn = document.getElementById('tracker-play');
-      if (this.isAutoPlaying) {
-        if (playBtn) {
-          playBtn.classList.add('playing');
-          playBtn.innerHTML = '⏸ Pause Tour';
-        }
-        if (this.autoPlayInterval) clearInterval(this.autoPlayInterval);
-        this.autoPlayInterval = setInterval(() => {
-          const next = this.currentStage < 3 ? this.currentStage + 1 : 1;
-          this.setStage(next, true);
-        }, 5500);
-      } else {
-        if (playBtn) {
-          playBtn.classList.remove('playing');
-          playBtn.innerHTML = '⏵ Auto Play';
-        }
-        if (this.autoPlayInterval) {
-          clearInterval(this.autoPlayInterval);
-          this.autoPlayInterval = null;
-        }
-      }
     }
 
     updateStageUI() {
@@ -776,17 +739,6 @@
           } else {
             btn.classList.remove('active');
           }
-        }
-      }
-
-      const subtitleEl = document.getElementById('tracker-subtitle');
-      if (subtitleEl) {
-        if (this.currentStage === 1) {
-          subtitleEl.innerHTML = '<strong>Stage 1/3:</strong> Core Transmission &amp; Totum — Large &amp; Small Wheels, Belts, and Support Truss';
-        } else if (this.currentStage === 2) {
-          subtitleEl.innerHTML = '<strong>Stage 2/3:</strong> Local Second Brains — Workspaces, Marina Sidecars, Jetskis &amp; Conduit Skills';
-        } else {
-          subtitleEl.innerHTML = '<strong>Stage 3/3:</strong> Full Architecture — Shared Services, Cybernetic Basement &amp; ACE Skills';
         }
       }
     }
@@ -2202,12 +2154,6 @@
         } else if (e.key === 'ArrowLeft' || e.key === '[') {
           this.prevStage();
           return;
-        } else if (e.key === 'p' || e.key === 'P') {
-          if (!e.metaKey && !e.ctrlKey) {
-            e.preventDefault();
-            this.toggleAutoPlay();
-            return;
-          }
         }
 
         if (isMirrored) {

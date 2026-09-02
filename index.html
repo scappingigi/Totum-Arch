@@ -16,22 +16,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=tracker_stage_v12">
+  <link rel="stylesheet" href="style.css?v=tracker_top_v13">
 </head>
 <body>
   <div class="app-container" id="app">
-    <h1 class="page-title">
-      <span class="title-primary">Project ACE Architecture</span>
-      <span class="title-secondary">With local second brains</span>
-      <span class="title-secondary">And central collective brain</span>
-    </h1>
-
-    <!-- Gradual Reveal Architecture Tracker -->
+    <!-- Gradual Reveal Architecture Tracker (On top of Title) -->
     <div id="stage-tracker" class="stage-tracker" title="Gradual Architecture Reveal Tracker">
       <div class="tracker-bar">
-        <button class="tracker-step-btn" data-step="1" id="step-btn-1" onclick="window.AppInstance &amp;&amp; window.AppInstance.setStage(1)" title="Stage 1: Core Mechanical Base (Large &amp; Small Wheels, Belts, and Triangle Truss)">
+        <button class="tracker-step-btn" data-step="1" id="step-btn-1" onclick="window.AppInstance &amp;&amp; window.AppInstance.setStage(1)" title="Stage 1: Collective Brain (Large &amp; Small Wheels, Belts, Triangle Chassis &amp; Central Objects)">
           <span class="step-badge">1</span>
-          <span class="step-label">Core Transmission</span>
+          <span class="step-label">Collective Brain</span>
         </button>
         <div class="tracker-divider"></div>
         <button class="tracker-step-btn" data-step="2" id="step-btn-2" onclick="window.AppInstance &amp;&amp; window.AppInstance.setStage(2)" title="Stage 2: Second Brains, Workspaces, Marina Sidecars &amp; Jetski Skills Conduits">
@@ -46,12 +40,16 @@
         
         <div class="tracker-nav-group">
           <button class="tracker-icon-btn" id="tracker-prev" onclick="window.AppInstance &amp;&amp; window.AppInstance.prevStage()" title="Previous Stage (← Left Arrow)">◀</button>
-          <button class="tracker-play-btn" id="tracker-play" onclick="window.AppInstance &amp;&amp; window.AppInstance.toggleAutoPlay()" title="Toggle Auto-Play Presentation (P)">⏵ Auto Play</button>
           <button class="tracker-icon-btn" id="tracker-next" onclick="window.AppInstance &amp;&amp; window.AppInstance.nextStage()" title="Next Stage (→ Right Arrow)">▶</button>
         </div>
       </div>
-      <div id="tracker-subtitle" class="tracker-subtitle">Stage 3 of 3: Full Architecture — Shared Services, Basement &amp; ACE Skills</div>
     </div>
+
+    <h1 class="page-title">
+      <span class="title-primary">Project ACE Architecture</span>
+      <span class="title-secondary">With local second brains</span>
+      <span class="title-secondary">And central collective brain</span>
+    </h1>
 
     <canvas id="sim-canvas"></canvas>
 
@@ -103,8 +101,8 @@
       </div>
     </div>
 
-    <!-- Draggable Positionable Google Cloud Object [Stage 3] -->
-    <div id="gcp-object" class="draggable-item draggable-gcp" data-stage="3" title="Totum Project - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Google Cloud Object (Inside Triangle) [Stage 1] -->
+    <div id="gcp-object" class="draggable-item draggable-gcp" data-stage="1" title="Totum Project - Click &amp; drag to position anywhere on the page">
       <div class="item-glow gcp-glow"></div>
       <img src="GoogleCloud.svg?v=official_v2" alt="Totum Project" class="gcp-img" draggable="false">
       <div class="item-label gcp-label">Totum Project</div>
@@ -131,8 +129,8 @@
       <div class="item-label gcp-label">Prod Docs</div>
     </div>
 
-    <!-- Draggable Positionable ADK (Central Curator) Object [Stage 3] -->
-    <div id="adk-object" class="draggable-item draggable-adk" data-stage="3" title="Central Curator (Google ADK) - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable ADK (Central Curator) Object (Inside Triangle) [Stage 1] -->
+    <div id="adk-object" class="draggable-item draggable-adk" data-stage="1" title="Central Curator (Google ADK) - Click &amp; drag to position anywhere on the page">
       <div class="item-glow adk-glow"></div>
       <img src="ADK.png?v=official_adk_v1" alt="Central Curator" class="adk-img" draggable="false">
       <div class="item-label adk-label">Central Curator</div>
@@ -145,15 +143,15 @@
       <div class="item-label adk-label">WAF</div>
     </div>
 
-    <!-- Draggable Positionable Spanner (Semantic Links) Object [Stage 3] -->
-    <div id="spanner-object" class="draggable-item draggable-spanner" data-stage="3" title="Semantic Links (Spanner) - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Spanner (Semantic Links) Object (Inside Triangle) [Stage 1] -->
+    <div id="spanner-object" class="draggable-item draggable-spanner" data-stage="1" title="Semantic Links (Spanner) - Click &amp; drag to position anywhere on the page">
       <div class="item-glow spanner-glow"></div>
       <img src="Spanner.png?v=1" alt="Semantic Links" class="spanner-img" draggable="false">
       <div class="item-label spanner-label">Semantic Links</div>
     </div>
 
-    <!-- Draggable Positionable Google Drive Object [Stage 3] -->
-    <div id="gdrive-object" class="draggable-item draggable-gdrive" data-stage="3" title="Central Docs - Click &amp; drag to position anywhere on the page">
+    <!-- Draggable Positionable Google Drive Object (Inside Triangle) [Stage 1] -->
+    <div id="gdrive-object" class="draggable-item draggable-gdrive" data-stage="1" title="Central Docs - Click &amp; drag to position anywhere on the page">
       <div class="item-glow gdrive-glow"></div>
       <img src="gdrive.png?v=1" alt="Central Docs" class="gdrive-img" draggable="false">
       <div class="item-label gdrive-label">Central Docs</div>
@@ -252,6 +250,6 @@
     <div id="sync-toast" class="sync-toast"></div>
   </div>
 
-  <script src="app.js?v=tracker_stage_v51"></script>
+  <script src="app.js?v=tracker_top_v52"></script>
 </body>
 </html>
