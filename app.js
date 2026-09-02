@@ -628,7 +628,7 @@
 
       // Preload ACE icon for conduit text badge
       this.aceImg = new Image();
-      this.aceImg.src = 'ACE.png?v=official_ace_v2';
+      this.aceImg.src = 'ACE.png?v=official_ace_trans_v3';
 
       this.initPulleys();
       this.setupEventListeners();
