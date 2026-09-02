@@ -2095,15 +2095,20 @@
       // 3. Triangular Support Basement (Drawn behind the large wheel)
       this.drawWheelSupportBasement(state.pulleys[0], theme);
 
-      // 4. Belts & Conduit Pipes (Connecting Central Totum to the 2 Personal Totums: Left and Right)
-      this.drawDirectBelt(state.pulleys[0], state.pulleys[1], theme);
-      this.drawDirectBelt(state.pulleys[0], state.pulleys[2], theme);
+      // 4. Belts & Conduit Pipes (Connecting Central Totum to the 2 Personal Totums: Left and Right) [Stage 2]
+      if (this.alphaStage2 > 0.001) {
+        ctx.save();
+        ctx.globalAlpha = this.alphaStage2;
+        this.drawDirectBelt(state.pulleys[0], state.pulleys[1], theme);
+        this.drawDirectBelt(state.pulleys[0], state.pulleys[2], theme);
 
-      // 5. Top 2 Small Wheels ("Personal Totum" with Brain artwork)
-      this.drawWheel(state.pulleys[1], theme, false);
-      this.drawWheel(state.pulleys[2], theme, false);
+        // 5. Top 2 Small Wheels ("Personal Totum" with Brain artwork) [Stage 2]
+        this.drawWheel(state.pulleys[1], theme, false);
+        this.drawWheel(state.pulleys[2], theme, false);
+        ctx.restore();
+      }
 
-      // 6. Bottom Center Large Wheel ("Central Totum" with Network Graph artwork & Greek Temple Icon)
+      // 6. Bottom Center Large Wheel ("Central Totum" with Network Graph artwork & Greek Temple Icon) [Stage 1]
       this.drawWheel(state.pulleys[0], theme, true);
 
       // 7. Independent Marina Stepping Wheels (Dual synchronized canvases)
@@ -2189,6 +2194,7 @@
 
       for (let i = 0; i < state.pulleys.length; i++) {
         const p = state.pulleys[i];
+        if (!p.isDriver && this.alphaStage2 < 0.5) continue; // Small wheels are hidden in Stage 1
         const dist = Math.hypot(pos.x - p.x, pos.y - p.y);
 
         if (dist <= p.radius + 15) {
