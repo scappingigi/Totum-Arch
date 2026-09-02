@@ -1732,25 +1732,25 @@
       ctx.save();
       ctx.translate(cbPos.x, cbPos.y);
 
-      const boxSize = 22;
+      const boxSize = 24;
       const halfBox = boxSize / 2;
 
       // Box Glow
       ctx.shadowColor = isAllowed ? 'rgba(0, 230, 118, 0.85)' : 'rgba(255, 45, 85, 0.9)';
-      ctx.shadowBlur = isAllowed ? 12 : 14;
+      ctx.shadowBlur = isAllowed ? 14 : 16;
 
       // Box Background
       ctx.fillStyle = isAllowed ? 'rgba(8, 24, 16, 0.95)' : 'rgba(28, 8, 14, 0.95)';
       ctx.beginPath();
       if (ctx.roundRect) {
-        ctx.roundRect(-halfBox, -halfBox, boxSize, boxSize, 4.5);
+        ctx.roundRect(-halfBox, -halfBox, boxSize, boxSize, 5);
       } else {
         ctx.rect(-halfBox, -halfBox, boxSize, boxSize);
       }
       ctx.fill();
 
       // Box Border
-      ctx.lineWidth = 1.8;
+      ctx.lineWidth = 2.0;
       ctx.strokeStyle = isAllowed ? '#00e676' : '#ff2d55';
       ctx.stroke();
 
@@ -1758,41 +1758,41 @@
       if (isAllowed) {
         // Bold Green Checkmark ✓
         ctx.strokeStyle = '#00e676';
-        ctx.lineWidth = 2.4;
+        ctx.lineWidth = 2.6;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         ctx.shadowColor = '#00e676';
-        ctx.shadowBlur = 6;
+        ctx.shadowBlur = 8;
 
         ctx.beginPath();
-        ctx.moveTo(-5.5, 0);
-        ctx.lineTo(-1.5, 4.5);
-        ctx.lineTo(5.5, -4.5);
+        ctx.moveTo(-6, 0);
+        ctx.lineTo(-1.8, 5);
+        ctx.lineTo(6, -5);
         ctx.stroke();
       } else {
         // Bold Red Cross ✕
         ctx.strokeStyle = '#ff2d55';
-        ctx.lineWidth = 2.4;
+        ctx.lineWidth = 2.6;
         ctx.lineCap = 'round';
         ctx.shadowColor = '#ff2d55';
-        ctx.shadowBlur = 6;
+        ctx.shadowBlur = 8;
 
         ctx.beginPath();
-        ctx.moveTo(-4.5, -4.5);
-        ctx.lineTo(4.5, 4.5);
-        ctx.moveTo(4.5, -4.5);
-        ctx.lineTo(-4.5, 4.5);
+        ctx.moveTo(-5, -5);
+        ctx.lineTo(5, 5);
+        ctx.moveTo(5, -5);
+        ctx.lineTo(-5, 5);
         ctx.stroke();
       }
 
-      // "FIREWALL" Micro Badge on Top
-      ctx.shadowColor = 'transparent';
-      ctx.shadowBlur = 0;
-      ctx.font = '700 7.5px "Inter", -apple-system, sans-serif';
-      ctx.fillStyle = isAllowed ? '#7ef7ea' : '#ff7b92';
+      // "CE" Bold Prominent Badge on Top
+      ctx.shadowColor = isAllowed ? 'rgba(0, 230, 118, 0.95)' : 'rgba(255, 45, 85, 0.95)';
+      ctx.shadowBlur = 8;
+      ctx.font = '800 12px "Inter", -apple-system, BlinkMacSystemFont, sans-serif';
+      ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
-      ctx.fillText('FIREWALL', 0, -halfBox - 3);
+      ctx.fillText('CE', 0, -halfBox - 3);
 
       ctx.restore();
       ctx.restore();
@@ -1855,9 +1855,9 @@
       const offsetLeft = ((state.beltOffset % arrowSpacing) + arrowSpacing) % arrowSpacing;
       const offsetRight = ((state.beltOffset % arrowSpacing) + arrowSpacing) % arrowSpacing;
 
-      // Firewall Parameters on the "Feed Collective Brain" pipe
+      // Firewall Parameters on the "Feed Collective Brain" pipe (Positioned close to the conduit pipe)
       const isAllowed = (pulleyIndex === 1) ? this.firewallLeftAllowed : this.firewallRightAllowed;
-      const t_fw = 0.17;
+      const t_fw = 0.22;
       const s_fw = totalSpan * t_fw;
 
       // 1. Consult Span Arrowheads (Always flowing)
@@ -1906,7 +1906,7 @@
           id: (pulleyIndex === 1) ? 'left' : 'right',
           cbPos: cbPos,
           fwPos: { x: fwX, y: fwY },
-          radius: 18
+          radius: 20
         });
       }
 
@@ -2370,12 +2370,11 @@
 
       const isMirrored = window.location.port === '8010' || window.location.port === '8020' || window.location.href.includes(':8010') || window.location.href.includes(':8020') || document.body.classList.contains('mirrored-view');
 
-      if (!isMirrored) {
-        this.canvas.addEventListener('pointerdown', (e) => this.onPointerDown(e));
-        window.addEventListener('pointermove', (e) => this.onPointerMove(e));
-        window.addEventListener('pointerup', (e) => this.onPointerUp(e));
-        window.addEventListener('pointercancel', (e) => this.onPointerUp(e));
-      }
+      // Always attach pointer listeners so firewall checkbox works on both Master and Read-Only Mirrored screens
+      this.canvas.addEventListener('pointerdown', (e) => this.onPointerDown(e));
+      window.addEventListener('pointermove', (e) => this.onPointerMove(e));
+      window.addEventListener('pointerup', (e) => this.onPointerUp(e));
+      window.addEventListener('pointercancel', (e) => this.onPointerUp(e));
 
       window.addEventListener('keydown', (e) => {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -2432,16 +2431,22 @@
       const pos = this.getPointerPos(e);
       state.dragMoved = false;
 
-      // 1. Check Firewall Checkbox Hit Targets (Stage 2+)
+      // 1. Check Firewall Checkbox Hit Targets (Active on ALL screens including 8010 read-only mirror)
       if (this.alphaStage2 >= 0.5 && this.firewallHitTargets && this.firewallHitTargets.length > 0) {
         for (const target of this.firewallHitTargets) {
           const distCb = Math.hypot(pos.x - target.cbPos.x, pos.y - target.cbPos.y);
           const distFw = Math.hypot(pos.x - target.fwPos.x, pos.y - target.fwPos.y);
-          if (distCb <= 18 || distFw <= 20) {
+          if (distCb <= 20 || distFw <= 22) {
             this.toggleFirewall(target.id);
             return;
           }
         }
+      }
+
+      // If running on mirrored/read-only port (8010 / 8020), disable wheel dragging
+      const isMirrored = window.location.port === '8010' || window.location.port === '8020' || window.location.href.includes(':8010') || window.location.href.includes(':8020') || document.body.classList.contains('mirrored-view');
+      if (isMirrored) {
+        return;
       }
 
       for (let i = 0; i < state.pulleys.length; i++) {
@@ -2468,7 +2473,7 @@
           for (const target of this.firewallHitTargets) {
             const distCb = Math.hypot(pos.x - target.cbPos.x, pos.y - target.cbPos.y);
             const distFw = Math.hypot(pos.x - target.fwPos.x, pos.y - target.fwPos.y);
-            if (distCb <= 18 || distFw <= 20) {
+            if (distCb <= 20 || distFw <= 22) {
               isOverFirewall = true;
               break;
             }
@@ -2477,7 +2482,8 @@
         this.canvas.style.cursor = isOverFirewall ? 'pointer' : 'default';
       }
 
-      if (!state.isDraggingWheel || state.draggedWheelIdx === -1) return;
+      const isMirrored = window.location.port === '8010' || window.location.port === '8020' || window.location.href.includes(':8010') || window.location.href.includes(':8020') || document.body.classList.contains('mirrored-view');
+      if (isMirrored || !state.isDraggingWheel || state.draggedWheelIdx === -1) return;
 
       const p = state.pulleys[state.draggedWheelIdx];
       const currentAngle = Math.atan2(pos.y - p.y, pos.x - p.x);
