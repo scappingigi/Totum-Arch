@@ -693,8 +693,9 @@
       state.pulleys[0].angularVel = (state.targetRPM * state.motorDir) * (2 * Math.PI / 60);
 
       // Initialize Firewall Toggle State for Left & Right Feed Conduits
+      // Start by default with one firewall checker selected (Left: Allowed) and one unselected (Right: Blocked)
       this.firewallLeftAllowed = true;
-      this.firewallRightAllowed = true;
+      this.firewallRightAllowed = false;
       this.firewallHitTargets = [];
 
       // Initialize Gradual Presentation Stage Tracking
@@ -1589,8 +1590,10 @@
       }
       ctx.rotate(textAngle);
 
+      ctx.font = '700 8.8px "Inter", -apple-system, BlinkMacSystemFont, sans-serif';
+      const textW = ctx.measureText(text.toUpperCase()).width;
       const isConsult = text.toUpperCase().includes('CONSULT');
-      const badgeW = isConsult ? 168 : 154;
+      const badgeW = Math.max(isConsult ? 172 : 160, Math.round(textW + 24));
       const badgeH = 20;
 
       ctx.fillStyle = 'rgba(18, 10, 24, 0.94)';
@@ -1611,7 +1614,6 @@
       // Crisp White Text
       ctx.shadowColor = 'rgba(218, 112, 214, 0.65)';
       ctx.shadowBlur = 5;
-      ctx.font = '700 8.8px "Inter", -apple-system, BlinkMacSystemFont, sans-serif';
       ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -1913,13 +1915,13 @@
       // Draw Firewall & Checkbox
       this.drawFirewall(ctx, fwX, fwY, feedAngle, isAllowed, cbPos, (pulleyIndex === 1) ? 'left' : 'right');
 
-      // Draw Conduit Pipes ("Consult Collective Brain" & "Feed Collective Brain")
+      // Draw Conduit Pipes ("Consult Central Collective Brain" & "Feed Central Collective Brain")
       if (isCW) {
-        this.drawConduitPipe(ctx, leftSpan.p1, leftSpan.p2, theme, 'Consult Collective Brain');
-        this.drawConduitPipe(ctx, rightSpan.p2, rightSpan.p1, theme, 'Feed Collective Brain');
+        this.drawConduitPipe(ctx, leftSpan.p1, leftSpan.p2, theme, 'Consult Central Collective Brain');
+        this.drawConduitPipe(ctx, rightSpan.p2, rightSpan.p1, theme, 'Feed Central Collective Brain');
       } else {
-        this.drawConduitPipe(ctx, rightSpan.p1, rightSpan.p2, theme, 'Consult Collective Brain');
-        this.drawConduitPipe(ctx, leftSpan.p2, leftSpan.p1, theme, 'Feed Collective Brain');
+        this.drawConduitPipe(ctx, rightSpan.p1, rightSpan.p2, theme, 'Consult Central Collective Brain');
+        this.drawConduitPipe(ctx, leftSpan.p2, leftSpan.p1, theme, 'Feed Central Collective Brain');
       }
     }
 
